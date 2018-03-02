@@ -4,10 +4,15 @@ package poojab26.bakingapp.model;
  * Created by poojab26 on 02-Mar-18.
  */
 
+import android.annotation.SuppressLint;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Ingredient {
+@SuppressLint("ParcelCreator")
+public class Ingredient implements Parcelable{
 
     @SerializedName("quantity")
     @Expose
@@ -43,4 +48,16 @@ public class Ingredient {
         this.ingredient = ingredient;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeDouble(quantity);
+        parcel.writeString(measure);
+        parcel.writeString(ingredient);
+
+    }
 }

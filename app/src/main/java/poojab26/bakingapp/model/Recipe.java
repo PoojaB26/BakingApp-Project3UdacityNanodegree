@@ -107,12 +107,7 @@ public class Recipe implements Parcelable{
     private Recipe(Parcel in) {
         name = in.readString();
         id = in.readInt();
+
     }
 
-    public Recipe(String name_str, int id_text) {
-        name = name_str;
-        id = id_text;
-    }
-
-    public Recipe(){}
 }

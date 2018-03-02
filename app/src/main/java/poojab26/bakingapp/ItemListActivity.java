@@ -14,7 +14,9 @@ import android.view.View;
 import poojab26.bakingapp.Interfaces.RetrofitInterface;
 import poojab26.bakingapp.Utils.APIClient;
 import poojab26.bakingapp.adapters.RecipeAdapter;
+import poojab26.bakingapp.model.Ingredient;
 import poojab26.bakingapp.model.Recipe;
+import poojab26.bakingapp.model.Step;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,7 +35,11 @@ import java.util.List;
  */
 public class ItemListActivity extends AppCompatActivity {
 
+    private static final String TAG = "Baking";
+
     private List<Recipe> recipeList = new ArrayList<>();
+
+
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
@@ -91,14 +97,19 @@ public class ItemListActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
 
-                List<Recipe> recipes = response.body();
-                // Recipe[] placelist = gson.fromJson(response, Recipe[].class);
+                final List<Recipe> recipes = response.body();
 
-                Log.d("TAG", recipes.get(0).getName());
 
                 recipeRecyclerView.setAdapter(new RecipeAdapter(recipes, new RecipeAdapter.OnItemClickListener() {
                     @Override public void onItemClick(int position) {
                         Log.d("TAG", "inside main");
+                        List<Ingredient> ingredients = recipes.get(position).getIngredients();
+                        Log.d(TAG, ingredients.get(position).getIngredient() );
+                        List<Step> steps = recipes.get(position).getSteps();
+                        for(int i = 0; i<steps.size(); i++) {
+                            Log.d(TAG, steps.get(i).getDescription());
+                        }
+
                     }
                 }));
             }

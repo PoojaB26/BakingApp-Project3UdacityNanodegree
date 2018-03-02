@@ -1,5 +1,7 @@
 package poojab26.bakingapp;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +15,7 @@ import android.view.View;
 
 import poojab26.bakingapp.Interfaces.RetrofitInterface;
 import poojab26.bakingapp.Utils.APIClient;
+import poojab26.bakingapp.Utils.Constants;
 import poojab26.bakingapp.adapters.RecipeAdapter;
 import poojab26.bakingapp.model.Ingredient;
 import poojab26.bakingapp.model.Recipe;
@@ -35,7 +38,6 @@ import java.util.List;
  */
 public class ItemListActivity extends AppCompatActivity {
 
-    private static final String TAG = "Baking";
 
     private List<Recipe> recipeList = new ArrayList<>();
 
@@ -103,15 +105,25 @@ public class ItemListActivity extends AppCompatActivity {
                 recipeRecyclerView.setAdapter(new RecipeAdapter(recipes, new RecipeAdapter.OnItemClickListener() {
                     @Override public void onItemClick(int position) {
                         Log.d("TAG", "inside main");
-                        List<Ingredient> ingredients = recipes.get(position).getIngredients();
-                        Log.d(TAG, ingredients.get(position).getIngredient() );
+                        ArrayList<Ingredient> ingredients = new ArrayList<>();
+                        ingredients = recipes.get(position).getIngredients();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(ItemDetailFragment.ARG_ITEM_ID, position);
+                        bundle.putParcelableArrayList(ItemDetailFragment.ARG_INGREDIENT, ingredients);
+                        Log.d(Constants.TAG, ingredients.get(position).getIngredient() );
                         List<Step> steps = recipes.get(position).getSteps();
                         for(int i = 0; i<steps.size(); i++) {
-                            Log.d(TAG, steps.get(i).getDescription());
+                            Log.d(Constants.TAG, steps.get(i).getDescription());
                         }
 
+                        Intent intent = new Intent(ItemListActivity.this, ItemDetailActivity.class);
+                        intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, position);
+                        intent.putExtra("bundle", bundle);
+
+                        startActivity(intent);
+
                     }
-                }));
+                } , ItemListActivity.this, false));
             }
 
             @Override

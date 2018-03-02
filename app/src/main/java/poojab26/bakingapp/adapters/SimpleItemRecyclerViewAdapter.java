@@ -32,7 +32,7 @@ public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleIt
             DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
             if (mTwoPane) {
                 Bundle arguments = new Bundle();
-                arguments.putString(ItemDetailFragment.ARG_ITEM_ID, item.id);
+                arguments.putString(ItemDetailFragment.ARG_ITEM_ID, Integer.toString(5));
                 ItemDetailFragment fragment = new ItemDetailFragment();
                 fragment.setArguments(arguments);
                 mParentActivity.getSupportFragmentManager().beginTransaction()
@@ -41,7 +41,7 @@ public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleIt
             } else {
                 Context context = view.getContext();
                 Intent intent = new Intent(context, ItemDetailActivity.class);
-                intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, item.id);
+                intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, 5);
 
                 context.startActivity(intent);
             }

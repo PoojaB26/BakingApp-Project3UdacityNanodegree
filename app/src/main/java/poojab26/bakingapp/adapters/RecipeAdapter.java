@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -17,9 +16,7 @@ import poojab26.bakingapp.ItemDetailActivity;
 import poojab26.bakingapp.ItemDetailFragment;
 import poojab26.bakingapp.ItemListActivity;
 import poojab26.bakingapp.R;
-import poojab26.bakingapp.dummy.DummyContent;
 import poojab26.bakingapp.model.Recipe;
-import timber.log.Timber;
 
 
 /**
@@ -27,15 +24,18 @@ import timber.log.Timber;
  */
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder>{
-    public RecipeAdapter(List<Recipe> recipes, OnItemClickListener listener) {
+    public RecipeAdapter(List<Recipe> recipes, OnItemClickListener listener, ItemListActivity parentActivity, boolean twoPane) {
         recipeList = recipes;
         mListener = listener;
+        mParentActivity = parentActivity;
+        mTwoPane = twoPane;
     }
 
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
-
+    private final ItemListActivity mParentActivity;
+    private final boolean mTwoPane;
     private final List<Recipe> recipeList;
     private final OnItemClickListener mListener;
 
@@ -75,8 +75,26 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mListener.onItemClick(position);
-                    Log.d("TAG", "clicked" + position);
+                    listener.onItemClick(position);
+                    Log.d("TAG", "clicked " + position + mTwoPane);
+
+                    if (mTwoPane) {
+                       /* Bundle arguments = new Bundle();
+                        arguments.putString(ItemDetailFragment.ARG_ITEM_ID, Integer.toString(5));*/
+                        ItemDetailFragment fragment = new ItemDetailFragment();
+                        fragment.setId(5);
+                        mParentActivity.getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.item_detail_container, fragment)
+                                .commit();
+                    } else {
+                        Log.d("TAG", "twopane " +  mTwoPane);
+
+                        /*Context context = view.getContext();
+                        Intent intent = new Intent(context, ItemDetailActivity.class);
+                        intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, position);
+
+                        context.startActivity(intent);*/
+                    }
                 }
             });
         }

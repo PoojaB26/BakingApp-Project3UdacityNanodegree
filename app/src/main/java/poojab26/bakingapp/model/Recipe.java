@@ -8,6 +8,7 @@ package poojab26.bakingapp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -22,7 +23,7 @@ public class Recipe implements Parcelable{
     private String name;
     @SerializedName("ingredients")
     @Expose
-    private List<Ingredient> ingredients = null;
+    private ArrayList<Ingredient> ingredients = null;
     @SerializedName("steps")
     @Expose
     private List<Step> steps = null;
@@ -61,11 +62,11 @@ public class Recipe implements Parcelable{
         this.name = name;
     }
 
-    public List<Ingredient> getIngredients() {
+    public ArrayList<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List<Ingredient> ingredients) {
+    public void setIngredients(ArrayList<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 

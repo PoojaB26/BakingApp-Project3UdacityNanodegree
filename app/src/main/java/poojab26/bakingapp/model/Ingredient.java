@@ -11,7 +11,6 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@SuppressLint("ParcelCreator")
 public class Ingredient implements Parcelable{
 
     @SerializedName("quantity")
@@ -23,6 +22,24 @@ public class Ingredient implements Parcelable{
     @SerializedName("ingredient")
     @Expose
     private String ingredient;
+
+    protected Ingredient(Parcel in) {
+        quantity = in.readDouble();
+        measure = in.readString();
+        ingredient = in.readString();
+    }
+
+    public static final Creator<Ingredient> CREATOR = new Creator<Ingredient>() {
+        @Override
+        public Ingredient createFromParcel(Parcel in) {
+            return new Ingredient(in);
+        }
+
+        @Override
+        public Ingredient[] newArray(int size) {
+            return new Ingredient[size];
+        }
+    };
 
     public Double getQuantity() {
         return quantity;

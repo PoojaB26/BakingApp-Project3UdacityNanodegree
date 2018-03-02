@@ -4,12 +4,20 @@ import android.app.Activity;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import poojab26.bakingapp.Utils.Constants;
 import poojab26.bakingapp.dummy.DummyContent;
+import poojab26.bakingapp.model.Ingredient;
 
 /**
  * A fragment representing a single Item detail screen.
@@ -23,11 +31,17 @@ public class ItemDetailFragment extends Fragment {
      * represents.
      */
     public static final String ARG_ITEM_ID = "item_id";
+    public static final String ARG_STEPS = "steps";
+    public static final String ARG_INGREDIENT = "ingredients";
+
+
+    private int mID;
+    private ArrayList<Ingredient> mIngredients;
 
     /**
      * The dummy content this fragment is presenting.
      */
-    private DummyContent.DummyItem mItem;
+    private int mItem;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -40,18 +54,20 @@ public class ItemDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
+        //if (getArguments().containsKey(ARG_ITEM_ID)) {
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
-            mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+//            mItem = getArguments().getInt(ARG_ITEM_ID);
+        //
+        //    Log.d(Constants.TAG, "mItem "+mItem);
 
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
-                appBarLayout.setTitle(mItem.content);
+              //  appBarLayout.setTitle(mItem.content);
             }
-        }
+       // }
     }
 
     @Override
@@ -59,11 +75,23 @@ public class ItemDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.item_detail, container, false);
 
-        // Show the dummy content as text in a TextView.
-        if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.item_detail)).setText(mItem.details);
-        }
+        TextView tvID = rootView.findViewById(R.id.item_text);
+        ListView lvIngredients = rootView.findViewById(R.id.list_ingredients);
+
+        tvID.setText(String.valueOf(mID));
+        Log.d(Constants.TAG, "ingredient from detail "+ mIngredients.get(mID).getQuantity());
+
+
 
         return rootView;
     }
+
+    public void setId(int id) {
+        mID = id;
+    }
+
+    public void setIngredients(ArrayList<Ingredient> ingredients) {
+        mIngredients = ingredients;
+    }
+
 }

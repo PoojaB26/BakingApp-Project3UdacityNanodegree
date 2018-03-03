@@ -65,6 +65,9 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder>{
                 @Override
                 public void onClick(View view) {
                     listener.onItemClick(position);
+
+
+
                   //  Log.d("TAG", "clicked " + position + mTwoPane);
 
                  /*   if (mTwoPane) {

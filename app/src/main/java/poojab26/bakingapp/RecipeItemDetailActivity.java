@@ -1,6 +1,7 @@
 package poojab26.bakingapp;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -23,7 +24,7 @@ import poojab26.bakingapp.model.Step;
  * item details are presented side-by-side with a list of items
  * in a {@link RecipeListActivity}.
  */
-public class RecipeItemDetailActivity extends AppCompatActivity {
+public class RecipeItemDetailActivity extends AppCompatActivity implements StepItemFragment.OnFragmentInteractionListener {
 
     ArrayList<Ingredient> ingredientList;
     ArrayList<Step> stepsList;
@@ -95,5 +96,10 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

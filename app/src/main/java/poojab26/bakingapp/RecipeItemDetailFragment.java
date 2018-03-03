@@ -100,6 +100,12 @@ public class RecipeItemDetailFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 Log.d(Constants.TAG, "clicked in detail fragment " + mSteps.get(mPositionID).getDescription());
+
+                StepItemFragment fragment = new StepItemFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.item_detail_container, fragment, null)
+                        .addToBackStack(null)
+                        .commit();
             }
         }));
     }

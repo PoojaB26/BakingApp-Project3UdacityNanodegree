@@ -1,19 +1,14 @@
 package poojab26.bakingapp.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import poojab26.bakingapp.ItemDetailFragment;
-import poojab26.bakingapp.ItemListActivity;
 import poojab26.bakingapp.R;
-import poojab26.bakingapp.model.Recipe;
 import poojab26.bakingapp.model.Step;
 
 
@@ -31,7 +26,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder>{
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
-  //  private final ItemListActivity mParentActivity;
+  //  private final RecipeListActivity mParentActivity;
     private final ArrayList<Step> stepArrayList;
     private final OnItemClickListener mListener;
 
@@ -74,8 +69,8 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder>{
 
                  /*   if (mTwoPane) {
                        *//* Bundle arguments = new Bundle();
-                        arguments.putString(ItemDetailFragment.ARG_ITEM_ID, Integer.toString(5));*//*
-                        ItemDetailFragment fragment = new ItemDetailFragment();
+                        arguments.putString(RecipeItemDetailFragment.ARG_ITEM_ID, Integer.toString(5));*//*
+                        RecipeItemDetailFragment fragment = new RecipeItemDetailFragment();
                         fragment.setId(5);
                         mParentActivity.getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.item_detail_container, fragment)
@@ -84,8 +79,8 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder>{
                         Log.d("TAG", "twopane " +  mTwoPane);
 
                         *//*Context context = view.getContext();
-                        Intent intent = new Intent(context, ItemDetailActivity.class);
-                        intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, position);
+                        Intent intent = new Intent(context, RecipeItemDetailActivity.class);
+                        intent.putExtra(RecipeItemDetailFragment.ARG_ITEM_ID, position);
 
                         context.startActivity(intent);*//*
                     }*/

@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import poojab26.bakingapp.ItemDetailFragment;
-import poojab26.bakingapp.ItemListActivity;
+import poojab26.bakingapp.RecipeItemDetailFragment;
+import poojab26.bakingapp.RecipeListActivity;
 import poojab26.bakingapp.R;
 import poojab26.bakingapp.model.Recipe;
 
@@ -20,7 +20,7 @@ import poojab26.bakingapp.model.Recipe;
  */
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder>{
-    public RecipeAdapter(List<Recipe> recipes, OnItemClickListener listener, ItemListActivity parentActivity, boolean twoPane) {
+    public RecipeAdapter(List<Recipe> recipes, OnItemClickListener listener, RecipeListActivity parentActivity, boolean twoPane) {
         recipeList = recipes;
         mListener = listener;
         mParentActivity = parentActivity;
@@ -30,7 +30,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
-    private final ItemListActivity mParentActivity;
+    private final RecipeListActivity mParentActivity;
     private final boolean mTwoPane;
     private final List<Recipe> recipeList;
     private final OnItemClickListener mListener;
@@ -76,8 +76,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
                     if (mTwoPane) {
                        /* Bundle arguments = new Bundle();
-                        arguments.putString(ItemDetailFragment.ARG_ITEM_ID, Integer.toString(5));*/
-                        ItemDetailFragment fragment = new ItemDetailFragment();
+                        arguments.putString(RecipeItemDetailFragment.ARG_ITEM_ID, Integer.toString(5));*/
+                        RecipeItemDetailFragment fragment = new RecipeItemDetailFragment();
                         fragment.setId(5);
                         mParentActivity.getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.item_detail_container, fragment)
@@ -86,8 +86,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                         Log.d("TAG", "twopane " +  mTwoPane);
 
                         /*Context context = view.getContext();
-                        Intent intent = new Intent(context, ItemDetailActivity.class);
-                        intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, position);
+                        Intent intent = new Intent(context, RecipeItemDetailActivity.class);
+                        intent.putExtra(RecipeItemDetailFragment.ARG_ITEM_ID, position);
 
                         context.startActivity(intent);*/
                     }

@@ -1,7 +1,5 @@
 package poojab26.bakingapp;
 
-import android.content.ClipData;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -33,11 +31,11 @@ import java.util.List;
  * An activity representing a list of Items. This activity
  * has different presentations for handset and tablet-size devices. On
  * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link ItemDetailActivity} representing
+ * lead to a {@link RecipeItemDetailActivity} representing
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class ItemListActivity extends AppCompatActivity {
+public class RecipeListActivity extends AppCompatActivity {
 
 
     private List<Recipe> recipeList = new ArrayList<>();
@@ -56,7 +54,7 @@ public class ItemListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_list);
+        setContentView(R.layout.activity_recipe_item_list);
 
         Timber.plant(new Timber.DebugTree());
 
@@ -109,9 +107,9 @@ public class ItemListActivity extends AppCompatActivity {
                         ArrayList<Step> steps = recipes.get(position).getSteps();
 
                         Bundle bundle = new Bundle();
-                        bundle.putInt(ItemDetailFragment.ARG_ITEM_ID, position);
-                        bundle.putParcelableArrayList(ItemDetailFragment.ARG_INGREDIENT, ingredients);
-                        bundle.putParcelableArrayList(ItemDetailFragment.ARG_STEPS, steps);
+                        bundle.putInt(RecipeItemDetailFragment.ARG_ITEM_ID, position);
+                        bundle.putParcelableArrayList(RecipeItemDetailFragment.ARG_INGREDIENT, ingredients);
+                        bundle.putParcelableArrayList(RecipeItemDetailFragment.ARG_STEPS, steps);
 
 
                         Log.d(Constants.TAG, steps.get(position).getDescription() );
@@ -119,14 +117,14 @@ public class ItemListActivity extends AppCompatActivity {
                             Log.d(Constants.TAG, steps.get(i).getDescription());
                         }
 
-                        Intent intent = new Intent(ItemListActivity.this, ItemDetailActivity.class);
-                        intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, position);
+                        Intent intent = new Intent(RecipeListActivity.this, RecipeItemDetailActivity.class);
+                        intent.putExtra(RecipeItemDetailFragment.ARG_ITEM_ID, position);
                         intent.putExtra("bundle", bundle);
 
                         startActivity(intent);
 
                     }
-                } , ItemListActivity.this, false));
+                } , RecipeListActivity.this, false));
             }
 
             @Override

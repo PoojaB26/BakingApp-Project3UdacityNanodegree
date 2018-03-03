@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import poojab26.bakingapp.ItemDetailActivity;
-import poojab26.bakingapp.ItemDetailFragment;
-import poojab26.bakingapp.ItemListActivity;
+import poojab26.bakingapp.RecipeItemDetailActivity;
+import poojab26.bakingapp.RecipeItemDetailFragment;
+import poojab26.bakingapp.RecipeListActivity;
 import poojab26.bakingapp.R;
 import poojab26.bakingapp.dummy.DummyContent;
 
@@ -22,7 +22,7 @@ import poojab26.bakingapp.dummy.DummyContent;
 
 public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-    private final ItemListActivity mParentActivity;
+    private final RecipeListActivity mParentActivity;
     private final List<DummyContent.DummyItem> mValues;
     private final boolean mTwoPane;
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -31,23 +31,23 @@ public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleIt
             DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
             if (mTwoPane) {
                 Bundle arguments = new Bundle();
-                arguments.putString(ItemDetailFragment.ARG_ITEM_ID, Integer.toString(5));
-                ItemDetailFragment fragment = new ItemDetailFragment();
+                arguments.putString(RecipeItemDetailFragment.ARG_ITEM_ID, Integer.toString(5));
+                RecipeItemDetailFragment fragment = new RecipeItemDetailFragment();
                 fragment.setArguments(arguments);
                 mParentActivity.getSupportFragmentManager().beginTransaction()
                         .replace(R.id.item_detail_container, fragment)
                         .commit();
             } else {
                 Context context = view.getContext();
-                Intent intent = new Intent(context, ItemDetailActivity.class);
-                intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, 5);
+                Intent intent = new Intent(context, RecipeItemDetailActivity.class);
+                intent.putExtra(RecipeItemDetailFragment.ARG_ITEM_ID, 5);
 
                 context.startActivity(intent);
             }
         }
     };
 
-    public SimpleItemRecyclerViewAdapter(ItemListActivity parent,
+    public SimpleItemRecyclerViewAdapter(RecipeListActivity parent,
                                   List<DummyContent.DummyItem> items,
                                   boolean twoPane) {
         mValues = items;

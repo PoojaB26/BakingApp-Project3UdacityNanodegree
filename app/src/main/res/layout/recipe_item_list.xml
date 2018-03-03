@@ -10,5 +10,5 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context="poojab26.bakingapp.ItemListActivity"
+    tools:context="poojab26.bakingapp.RecipeListActivity"
     tools:listitem="@layout/recipe_item_list_content" />

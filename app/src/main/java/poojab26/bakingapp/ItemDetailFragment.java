@@ -61,7 +61,7 @@ public class ItemDetailFragment extends Fragment {
 //            mItem = getArguments().getInt(ARG_ITEM_ID);
         //
         //    Log.d(Constants.TAG, "mItem "+mItem);
-
+            //TODO this part may be removed for landscape
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
@@ -77,6 +77,35 @@ public class ItemDetailFragment extends Fragment {
 
         TextView tvID = rootView.findViewById(R.id.item_text);
         ListView lvIngredients = rootView.findViewById(R.id.list_ingredients);
+
+        String[] values = new String[] { "Android List View",
+                "Adapter implementation",
+                "Simple List View In Android",
+                "Create List View Android",
+                "Android Example",
+                "List View Source Code",
+                "List View Array Adapter",
+                "Android Example List View"
+        };
+
+       /* final ArrayList<String> list_ingredients = new ArrayList<String>();
+        for (int i = 0; i < mIngredients.size(); ++i) {
+            list_ingredients.add(mIngredients.get(i).getIngredient());
+        }
+*/
+        String[] stringArray_Ing = new String[mIngredients.size()];
+        for (int i = 0; i < mIngredients.size(); ++i) {
+            stringArray_Ing[i] = mIngredients.get(i).getIngredient();
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
+                R.layout.listview_item, R.id.tv_ingredient_item, stringArray_Ing);
+
+
+        // Assign adapter to ListView
+        lvIngredients.setAdapter(adapter);
+
+
 
         tvID.setText(String.valueOf(mID));
         Log.d(Constants.TAG, "ingredient from detail "+ mIngredients.get(mID).getQuantity());

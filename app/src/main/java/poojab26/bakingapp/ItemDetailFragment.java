@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +17,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import poojab26.bakingapp.Interfaces.RetrofitInterface;
 import poojab26.bakingapp.Utils.Constants;
+import poojab26.bakingapp.adapters.RecipeAdapter;
+import poojab26.bakingapp.adapters.StepsAdapter;
 import poojab26.bakingapp.dummy.DummyContent;
 import poojab26.bakingapp.model.Ingredient;
+import poojab26.bakingapp.model.Step;
 
 /**
  * A fragment representing a single Item detail screen.
@@ -35,8 +41,15 @@ public class ItemDetailFragment extends Fragment {
     public static final String ARG_INGREDIENT = "ingredients";
 
 
-    private int mID;
+    private int mPositionID;
     private ArrayList<Ingredient> mIngredients;
+    private ArrayList<Step> mSteps;
+
+    ListView lvIngredients;
+
+    StepsAdapter stepsAdapter;
+    RecyclerView stepsRecyclerView;
+    RecyclerView.LayoutManager layoutManager;
 
     /**
      * The dummy content this fragment is presenting.
@@ -63,7 +76,7 @@ public class ItemDetailFragment extends Fragment {
         //    Log.d(Constants.TAG, "mItem "+mItem);
             //TODO this part may be removed for landscape
             Activity activity = this.getActivity();
-            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+            CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
               //  appBarLayout.setTitle(mItem.content);
             }
@@ -74,25 +87,28 @@ public class ItemDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.item_detail, container, false);
-
         TextView tvID = rootView.findViewById(R.id.item_text);
-        ListView lvIngredients = rootView.findViewById(R.id.list_ingredients);
+        lvIngredients = rootView.findViewById(R.id.list_ingredients);
+        stepsRecyclerView = rootView.findViewById(R.id.rvSteps);
 
-        String[] values = new String[] { "Android List View",
-                "Adapter implementation",
-                "Simple List View In Android",
-                "Create List View Android",
-                "Android Example",
-                "List View Source Code",
-                "List View Array Adapter",
-                "Android Example List View"
-        };
+        setupListViewIngredients();
+        setupStepsAdapter();
+        tvID.setText(String.valueOf(mPositionID));
+        return rootView;
+    }
 
-       /* final ArrayList<String> list_ingredients = new ArrayList<String>();
-        for (int i = 0; i < mIngredients.size(); ++i) {
-            list_ingredients.add(mIngredients.get(i).getIngredient());
-        }
-*/
+    private void setupStepsAdapter() {
+        layoutManager = new LinearLayoutManager(getActivity());
+        stepsRecyclerView.setLayoutManager(layoutManager);
+        stepsRecyclerView.setAdapter(new StepsAdapter(mSteps, new StepsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Log.d(Constants.TAG, "clicked in detail fragment " + mSteps.get(mPositionID).getDescription());
+            }
+        }));
+    }
+
+    private void setupListViewIngredients() {
         String[] stringArray_Ing = new String[mIngredients.size()];
         for (int i = 0; i < mIngredients.size(); ++i) {
             stringArray_Ing[i] = mIngredients.get(i).getIngredient();
@@ -104,23 +120,15 @@ public class ItemDetailFragment extends Fragment {
 
         // Assign adapter to ListView
         lvIngredients.setAdapter(adapter);
-
-
-
-        tvID.setText(String.valueOf(mID));
-        Log.d(Constants.TAG, "ingredient from detail "+ mIngredients.get(mID).getQuantity());
-
-
-
-        return rootView;
     }
-
     public void setId(int id) {
-        mID = id;
+        mPositionID = id;
     }
-
     public void setIngredients(ArrayList<Ingredient> ingredients) {
         mIngredients = ingredients;
+    }
+    public void setSteps(ArrayList<Step> steps) {
+        mSteps = steps;
     }
 
 }

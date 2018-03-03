@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import poojab26.bakingapp.Utils.Constants;
 import poojab26.bakingapp.model.Ingredient;
+import poojab26.bakingapp.model.Step;
 
 /**
  * An activity representing a single Item detail screen. This
@@ -25,6 +26,7 @@ import poojab26.bakingapp.model.Ingredient;
 public class ItemDetailActivity extends AppCompatActivity {
 
     ArrayList<Ingredient> ingredientList;
+    ArrayList<Step> stepsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +65,16 @@ public class ItemDetailActivity extends AppCompatActivity {
             int position_ID = getIntent().getIntExtra(ItemDetailFragment.ARG_ITEM_ID, 0);
             Bundle extras = getIntent().getBundleExtra("bundle");
             if(extras!=null)
-            { ingredientList  = extras.getParcelableArrayList(ItemDetailFragment.ARG_INGREDIENT);
-                Log.d(Constants.TAG,"Detail activity " + ingredientList.get(position_ID).getIngredient());
+            {
+                ingredientList  = extras.getParcelableArrayList(ItemDetailFragment.ARG_INGREDIENT);
+                stepsList = extras.getParcelableArrayList(ItemDetailFragment.ARG_STEPS);
+
+                Log.d(Constants.TAG,"Detail activity " + stepsList.get(position_ID).getDescription());
             }
-            Log.d(Constants.TAG, position_ID+"");
             ItemDetailFragment fragment = new ItemDetailFragment();
             fragment.setId(position_ID);
             fragment.setIngredients(ingredientList);
+            fragment.setSteps(stepsList);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.item_detail_container, fragment)
                     .commit();

@@ -7,76 +7,74 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import poojab26.bakingapp.ItemDetailFragment;
 import poojab26.bakingapp.ItemListActivity;
 import poojab26.bakingapp.R;
 import poojab26.bakingapp.model.Recipe;
+import poojab26.bakingapp.model.Step;
 
 
 /**
  * Created by poojab26 on 02-Mar-18.
  */
 
-public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder>{
-    public RecipeAdapter(List<Recipe> recipes, OnItemClickListener listener, ItemListActivity parentActivity, boolean twoPane) {
-        recipeList = recipes;
+public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder>{
+    public StepsAdapter(ArrayList<Step> steps, OnItemClickListener listener) {
+        stepArrayList = steps;
         mListener = listener;
-        mParentActivity = parentActivity;
-        mTwoPane = twoPane;
+       // mParentActivity = parentActivity;
     }
 
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
-    private final ItemListActivity mParentActivity;
-    private final boolean mTwoPane;
-    private final List<Recipe> recipeList;
+  //  private final ItemListActivity mParentActivity;
+    private final ArrayList<Step> stepArrayList;
     private final OnItemClickListener mListener;
 
 
     @Override
-    public RecipeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public StepsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recipe_item_list_content, parent, false);
+                .inflate(R.layout.steps_card_layout, parent, false);
         return new ViewHolder(view);    }
 
     @Override
-    public void onBindViewHolder(RecipeAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(StepsAdapter.ViewHolder holder, int position) {
         holder.bind(position, mListener);
 
     }
 
     @Override
     public int getItemCount() {
-        return recipeList.size();
+        return stepArrayList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView tvId, tvName;
+        TextView tvStepDescription;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            tvId = itemView.findViewById(R.id.tv_id);
-            tvName = itemView.findViewById(R.id.tvName);
+            tvStepDescription = itemView.findViewById(R.id.tv_steps_item);
         }
 
         public void bind(final int position, final OnItemClickListener listener) {
-            tvId.setText(Integer.toString(recipeList.get(position).getId()));
-            tvName.setText(recipeList.get(position).getName());
+            tvStepDescription.setText(stepArrayList.get(position).getDescription());
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     listener.onItemClick(position);
-                    Log.d("TAG", "clicked " + position + mTwoPane);
+                  //  Log.d("TAG", "clicked " + position + mTwoPane);
 
-                    if (mTwoPane) {
-                       /* Bundle arguments = new Bundle();
-                        arguments.putString(ItemDetailFragment.ARG_ITEM_ID, Integer.toString(5));*/
+                 /*   if (mTwoPane) {
+                       *//* Bundle arguments = new Bundle();
+                        arguments.putString(ItemDetailFragment.ARG_ITEM_ID, Integer.toString(5));*//*
                         ItemDetailFragment fragment = new ItemDetailFragment();
                         fragment.setId(5);
                         mParentActivity.getSupportFragmentManager().beginTransaction()
@@ -85,12 +83,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                     } else {
                         Log.d("TAG", "twopane " +  mTwoPane);
 
-                        /*Context context = view.getContext();
+                        *//*Context context = view.getContext();
                         Intent intent = new Intent(context, ItemDetailActivity.class);
                         intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, position);
 
-                        context.startActivity(intent);*/
-                    }
+                        context.startActivity(intent);*//*
+                    }*/
                 }
             });
         }

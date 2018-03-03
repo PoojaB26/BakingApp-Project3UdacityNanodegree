@@ -24,7 +24,7 @@ import poojab26.bakingapp.model.Step;
  * item details are presented side-by-side with a list of items
  * in a {@link RecipeListActivity}.
  */
-public class RecipeItemDetailActivity extends AppCompatActivity implements StepItemFragment.OnFragmentInteractionListener {
+public class RecipeItemDetailActivity extends AppCompatActivity {
 
     ArrayList<Ingredient> ingredientList;
     ArrayList<Step> stepsList;
@@ -98,8 +98,4 @@ public class RecipeItemDetailActivity extends AppCompatActivity implements StepI
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
 }

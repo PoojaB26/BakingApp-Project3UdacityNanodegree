@@ -102,6 +102,8 @@ public class RecipeItemDetailFragment extends Fragment {
                 Log.d(Constants.TAG, "clicked in detail fragment " + mSteps.get(mPositionID).getDescription());
 
                 StepItemFragment fragment = new StepItemFragment();
+                fragment.setSteps(mSteps);
+                fragment.setPosition(mPositionID);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.item_detail_container, fragment, null)
                         .addToBackStack(null)

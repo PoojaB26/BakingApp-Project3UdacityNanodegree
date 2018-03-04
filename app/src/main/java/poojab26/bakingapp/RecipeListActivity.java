@@ -81,10 +81,18 @@ public class RecipeListActivity extends AppCompatActivity {
         }
 
         recipeRecyclerView = (RecyclerView) findViewById(R.id.rvRecipes);
+        if(recipeRecyclerView!=null){
+            Log.d("TAG", "NOT NULL");
+        }
+             setupRecyclerView();
+
+
+    }
+
+    private void setupRecyclerView() {
         layoutManager = new LinearLayoutManager(this);
         recipeRecyclerView.setLayoutManager(layoutManager);
         loadRecipes();
-
     }
 
 
@@ -110,12 +118,6 @@ public class RecipeListActivity extends AppCompatActivity {
                         bundle.putInt(RecipeItemDetailFragment.ARG_ITEM_ID, position);
                         bundle.putParcelableArrayList(RecipeItemDetailFragment.ARG_INGREDIENT, ingredients);
                         bundle.putParcelableArrayList(RecipeItemDetailFragment.ARG_STEPS, steps);
-
-
-                        Log.d(Constants.TAG, steps.get(position).getDescription() );
-                        for(int i = 0; i<steps.size(); i++) {
-                            Log.d(Constants.TAG, steps.get(i).getDescription());
-                        }
 
                         Intent intent = new Intent(RecipeListActivity.this, RecipeItemDetailActivity.class);
                         intent.putExtra(RecipeItemDetailFragment.ARG_ITEM_ID, position);

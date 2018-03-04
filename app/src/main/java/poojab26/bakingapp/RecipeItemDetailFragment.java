@@ -113,7 +113,7 @@ public class RecipeItemDetailFragment extends Fragment {
 
                 StepItemFragment fragment = new StepItemFragment();
                 fragment.setSteps(mSteps);
-                fragment.setPosition(mPositionID);
+                fragment.setPosition(position);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.item_detail_container, fragment, null)
                         .addToBackStack(null)

@@ -38,7 +38,7 @@ public class StepItemFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_step_item, container, false);
         TextView tvDescription = rootView.findViewById(R.id.tvStepDescription);
-        tvDescription.setText(mSteps.get(mPositionID).getDescription());
+        tvDescription.setText("hiiiiii"+mSteps.get(mPositionID).getDescription());
         return rootView;
     }
 

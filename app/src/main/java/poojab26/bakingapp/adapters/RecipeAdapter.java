@@ -72,25 +72,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                 @Override
                 public void onClick(View view) {
                     listener.onItemClick(position);
-                    Log.d("TAG", "clicked " + position + mTwoPane);
 
-                    if (mTwoPane) {
-                       /* Bundle arguments = new Bundle();
-                        arguments.putString(RecipeItemDetailFragment.ARG_ITEM_ID, Integer.toString(5));*/
-                        RecipeItemDetailFragment fragment = new RecipeItemDetailFragment();
-                        fragment.setId(5);
-                        mParentActivity.getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.item_detail_container, fragment)
-                                .commit();
-                    } else {
-                        Log.d("TAG", "twopane " +  mTwoPane);
-
-                        /*Context context = view.getContext();
-                        Intent intent = new Intent(context, RecipeItemDetailActivity.class);
-                        intent.putExtra(RecipeItemDetailFragment.ARG_ITEM_ID, position);
-
-                        context.startActivity(intent);*/
-                    }
                 }
             });
         }

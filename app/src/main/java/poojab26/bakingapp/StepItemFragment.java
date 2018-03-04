@@ -52,12 +52,14 @@ public class StepItemFragment extends Fragment {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                StepItemFragment fragment = new StepItemFragment();
-                fragment.setSteps(mSteps);
-                fragment.setPosition(mStepPositionID+1);
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.item_detail_container, fragment, null)
-                        .commit();
+                if(mStepPositionID<mSteps.size()-1) {
+                    StepItemFragment fragment = new StepItemFragment();
+                    fragment.setSteps(mSteps);
+                    fragment.setPosition(mStepPositionID + 1);
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.item_detail_container, fragment, null)
+                            .commit();
+                }
 
             }
         });
@@ -65,12 +67,16 @@ public class StepItemFragment extends Fragment {
         btnPrev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                StepItemFragment fragment = new StepItemFragment();
-                fragment.setSteps(mSteps);
-                fragment.setPosition(mStepPositionID-1);
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.item_detail_container, fragment, null)
-                        .commit();
+                if(mStepPositionID>0) {
+
+                    StepItemFragment fragment = new StepItemFragment();
+                    fragment.setSteps(mSteps);
+                    fragment.setPosition(mStepPositionID - 1);
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.item_detail_container, fragment, null)
+                            .commit();
+
+                }
 
             }
         });

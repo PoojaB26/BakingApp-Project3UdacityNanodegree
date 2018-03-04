@@ -64,19 +64,29 @@ public class RecipeItemDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         //if (getArguments().containsKey(ARG_ITEM_ID)) {
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
+        // Load the dummy content specified by the fragment
+        // arguments. In a real-world scenario, use a Loader
+        // to load content from a content provider.
 //            mItem = getArguments().getInt(ARG_ITEM_ID);
         //
         //    Log.d(Constants.TAG, "mItem "+mItem);
-            //TODO this part may be removed for landscape
-            Activity activity = this.getActivity();
-            CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
-            if (appBarLayout != null) {
-              //  appBarLayout.setTitle(mItem.content);
-            }
-       // }
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            mPositionID = bundle.getInt(ARG_ITEM_ID, 0);
+            Log.d(Constants.TAG, "position ID from fragment " + mPositionID);
+            mIngredients = bundle.getParcelableArrayList(ARG_INGREDIENT);
+            mSteps = bundle.getParcelableArrayList(ARG_STEPS);
+        }
+
+
+        //TODO this part may be removed for landscape
+        Activity activity = this.getActivity();
+        CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
+        if (appBarLayout != null) {
+            //  appBarLayout.setTitle(mItem.content);
+        }
+        // }
     }
 
     @Override
@@ -128,11 +138,11 @@ public class RecipeItemDetailFragment extends Fragment {
     public void setId(int id) {
         mPositionID = id;
     }
-    public void setIngredients(ArrayList<Ingredient> ingredients) {
+  /*  public void setIngredients(ArrayList<Ingredient> ingredients) {
         mIngredients = ingredients;
     }
     public void setSteps(ArrayList<Step> steps) {
         mSteps = steps;
-    }
+    }*/
 
 }

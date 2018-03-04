@@ -73,9 +73,7 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
                 Log.d(Constants.TAG,"Detail activity " + stepsList.get(position_ID).getDescription());
             }
             RecipeItemDetailFragment fragment = new RecipeItemDetailFragment();
-            fragment.setId(position_ID);
-            fragment.setIngredients(ingredientList);
-            fragment.setSteps(stepsList);
+            fragment.setArguments(extras);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.item_detail_container, fragment)
                     .commit();

@@ -56,7 +56,6 @@ public class RecipeListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_item_list);
 
-        Timber.plant(new Timber.DebugTree());
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -119,11 +118,21 @@ public class RecipeListActivity extends AppCompatActivity {
                         bundle.putParcelableArrayList(RecipeItemDetailFragment.ARG_INGREDIENT, ingredients);
                         bundle.putParcelableArrayList(RecipeItemDetailFragment.ARG_STEPS, steps);
 
-                        Intent intent = new Intent(RecipeListActivity.this, RecipeItemDetailActivity.class);
-                        intent.putExtra(RecipeItemDetailFragment.ARG_ITEM_ID, position);
-                        intent.putExtra("bundle", bundle);
 
-                        startActivity(intent);
+                        if(mTwoPane){
+                            RecipeItemDetailFragment fragment = new RecipeItemDetailFragment();
+                            fragment.setArguments(bundle);
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.item_detail_container, fragment)
+                                    .commit();
+
+                        }else {
+                            Intent intent = new Intent(RecipeListActivity.this, RecipeItemDetailActivity.class);
+                            intent.putExtra(RecipeItemDetailFragment.ARG_ITEM_ID, position);
+                            intent.putExtra("bundle", bundle);
+
+                            startActivity(intent);
+                        }
 
                     }
                 } , RecipeListActivity.this, false));

@@ -43,6 +43,7 @@ public class RecipeItemDetailFragment extends Fragment {
     private ArrayList<Step> mSteps;
 
     ListView lvIngredients;
+    TextView tvIngredientsList;
 
     StepsAdapter stepsAdapter;
     RecyclerView stepsRecyclerView;
@@ -81,7 +82,6 @@ public class RecipeItemDetailFragment extends Fragment {
         }
 
 
-        //TODO this part may be removed for landscape
         Activity activity = this.getActivity();
         CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
         if (appBarLayout != null) {
@@ -95,13 +95,24 @@ public class RecipeItemDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.recipe_item_detail, container, false);
         TextView tvID = rootView.findViewById(R.id.item_text);
-        lvIngredients = rootView.findViewById(R.id.list_ingredients);
+       // lvIngredients = rootView.findViewById(R.id.list_ingredients);
+        tvIngredientsList = rootView.findViewById(R.id.tvIngredientsList);
         stepsRecyclerView = rootView.findViewById(R.id.rvSteps);
 
-        setupListViewIngredients();
+        setupIngredientsList();
+        //setupListViewIngredients();
         setupStepsAdapter();
         tvID.setText(String.valueOf(mPositionID));
         return rootView;
+    }
+
+    private void setupIngredientsList() {
+        StringBuilder stringIngredients = new StringBuilder();
+        for (int i = 0; i < mIngredients.size(); ++i) {
+            stringIngredients.append(mIngredients.get(i).getIngredient()+"\n");
+        }
+
+        tvIngredientsList.setText(stringIngredients);
     }
 
     private void setupStepsAdapter() {

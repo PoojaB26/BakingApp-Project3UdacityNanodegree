@@ -14,12 +14,19 @@
         android:textIsSelectable="true"
         tools:context="poojab26.bakingapp.RecipeItemDetailFragment" />
 
-    <ListView
+   <!-- <ListView
         android:id="@+id/list_ingredients"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@color/colorPrimary">
-    </ListView>
+    </ListView>-->
+
+    <TextView
+        android:id="@+id/tvIngredientsList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="20"
+        android:text="jhdfjdhfhj\nahafhasj\nadsadhsahj\nadhahsd\nsajdhgashdg\najdhgahsdgh\nasdhgghasgdh"/>
 
     <android.support.v7.widget.RecyclerView
         android:visibility="visible"

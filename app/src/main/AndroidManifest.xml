@@ -30,6 +30,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="poojab26.bakingapp.RecipeListActivity" />
         </activity>
+
+        <receiver android:name=".RecipeAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/recipe_app_widget_info" />
+        </receiver>
     </application>
 
 </manifest>

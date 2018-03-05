@@ -33,6 +33,7 @@ public class RecipeItemDetailFragment extends Fragment {
      * represents.
      */
     public static final String ARG_ITEM_ID = "item_id";
+    public static final String ARG_RECIPE_NAME = "recipe_name";
     public static final String ARG_STEPS = "steps";
     public static final String ARG_INGREDIENT = "ingredients";
 

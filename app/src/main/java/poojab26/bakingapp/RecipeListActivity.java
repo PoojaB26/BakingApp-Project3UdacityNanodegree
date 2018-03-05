@@ -109,12 +109,12 @@ public class RecipeListActivity extends AppCompatActivity {
 
                 recipeRecyclerView.setAdapter(new RecipeAdapter(recipes, new RecipeAdapter.OnItemClickListener() {
                     @Override public void onItemClick(int position) {
-                        Log.d("TAG", "inside main");
                         ArrayList<Ingredient> ingredients = recipes.get(position).getIngredients();
                         ArrayList<Step> steps = recipes.get(position).getSteps();
 
                         Bundle bundle = new Bundle();
                         bundle.putInt(RecipeItemDetailFragment.ARG_ITEM_ID, position);
+                        bundle.putString(RecipeItemDetailFragment.ARG_RECIPE_NAME, recipes.get(position).getName());
                         bundle.putParcelableArrayList(RecipeItemDetailFragment.ARG_INGREDIENT, ingredients);
                         bundle.putParcelableArrayList(RecipeItemDetailFragment.ARG_STEPS, steps);
 

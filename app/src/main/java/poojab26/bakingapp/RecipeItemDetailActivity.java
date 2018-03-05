@@ -1,5 +1,7 @@
 package poojab26.bakingapp;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,6 +30,8 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
 
     ArrayList<Ingredient> ingredientList;
     ArrayList<Step> stepsList;
+    Bundle extras;
+    String recipeName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +44,21 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
+                RecipeAppWidget.setRecipeName(recipeName);
+
+                StringBuilder ingredientString = new StringBuilder();
+                for(int i=0; i<ingredientList.size(); i++){
+                      ingredientString.append(ingredientList.get(i).getIngredient()+"\n");
+                 }
+                RecipeAppWidget.setIngredients(ingredientString);
+                Intent intent = new Intent(RecipeItemDetailActivity.this, RecipeAppWidget.class);
+                intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+
+                int[] ids = AppWidgetManager.getInstance(getApplication())
+                        .getAppWidgetIds(new ComponentName(getApplication(), RecipeAppWidget.class));
+                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+                sendBroadcast(intent);
             }
         });
 
@@ -64,13 +81,12 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             int position_ID = getIntent().getIntExtra(RecipeItemDetailFragment.ARG_ITEM_ID, 0);
-            Bundle extras = getIntent().getBundleExtra("bundle");
+            extras = getIntent().getBundleExtra("bundle");
             if(extras!=null)
             {
+                recipeName = extras.getString(RecipeItemDetailFragment.ARG_RECIPE_NAME);
                 ingredientList  = extras.getParcelableArrayList(RecipeItemDetailFragment.ARG_INGREDIENT);
                 stepsList = extras.getParcelableArrayList(RecipeItemDetailFragment.ARG_STEPS);
-
-                Log.d(Constants.TAG,"Detail activity " + stepsList.get(position_ID).getDescription());
             }
             RecipeItemDetailFragment fragment = new RecipeItemDetailFragment();
             fragment.setArguments(extras);

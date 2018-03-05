@@ -1,21 +1,33 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/widget_container"
     android:background="#09C"
     android:padding="@dimen/widget_margin">
 
+
+
     <TextView
-        android:id="@+id/appwidget_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/tvRecipeName"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:layout_margin="8dp"
-        android:background="#09C"
-        android:contentDescription="@string/appwidget_text"
-        android:text="@string/appwidget_text"
         android:textColor="#ffffff"
         android:textSize="24sp"
-        android:textStyle="bold|italic" />
+        android:textStyle="bold|italic"
+        android:text="Brownies"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvIngredientsWidget"
+        android:layout_below="@+id/tvRecipeName"
+        android:maxLines="15"
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffffff"
+        android:textSize="24sp"
+        android:textStyle="bold|italic"
+        android:layout_margin="8dp"/>
 
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package poojab26.bakingapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +12,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
+
 import java.util.ArrayList;
 
 import poojab26.bakingapp.Utils.Constants;
@@ -18,12 +30,18 @@ import poojab26.bakingapp.model.Step;
 
 public class StepItemFragment extends Fragment {
 
-    // boolean to keep track when user goes out of screen so as to pause the video.
-    private boolean mOnScreen;
-
     private ArrayList<Step> mSteps;
     private int mStepPositionID;
     Button btnNext, btnPrev;
+
+    private SimpleExoPlayer player;
+    private SimpleExoPlayerView playerView;
+
+    private long playbackPosition;
+    private int currentWindow;
+    private boolean playWhenReady = true;
+
+    String path;
 
     public StepItemFragment() {
         // Required empty public constructor
@@ -42,9 +60,11 @@ public class StepItemFragment extends Fragment {
         btnNext = rootView.findViewById(R.id.btnNext);
         btnPrev = rootView.findViewById(R.id.btnPrev);
 
+        playerView = rootView.findViewById(R.id.player_view);
+
         TextView tvDescription = rootView.findViewById(R.id.tvStepDescription);
         tvDescription.setText(mSteps.get(mStepPositionID).getDescription());
-        //setButtonClicks();
+        path = mSteps.get(mStepPositionID).getVideoURL();
 
          StepItemFragment fragment = new StepItemFragment();
         fragment.setSteps(mSteps);
@@ -82,35 +102,11 @@ public class StepItemFragment extends Fragment {
         });
 
 
-
         return rootView;
     }
 
-    private void setButtonClicks(){
-        final StepItemFragment fragment = new StepItemFragment();
-        fragment.setSteps(mSteps);
 
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fragment.setPosition(mStepPositionID+1);
 
-            }
-        });
-
-        btnPrev.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fragment.setPosition(mStepPositionID-1);
-
-            }
-        });
-
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.item_detail_container, fragment, null)
-                .commit();
-
-    }
     public void setSteps(ArrayList<Step> steps){
         mSteps = steps;
     }
@@ -118,4 +114,91 @@ public class StepItemFragment extends Fragment {
     public void setPosition(int position){
         mStepPositionID = position;
     }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (Util.SDK_INT > 23) {
+            if(!path.equals(""))
+                initializePlayer();
+            else hideVideoView();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        hideSystemUi();
+        if ((Util.SDK_INT <= 23 || player == null)) {
+            if(!path.equals(""))
+                initializePlayer();
+            else hideVideoView();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(Constants.TAG, "onPause" + path);
+
+        if (Util.SDK_INT <= 23) {
+            releasePlayer();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(Constants.TAG, "onStop" + path);
+
+        if (Util.SDK_INT > 23) {
+            releasePlayer();
+        }
+    }
+
+    private void initializePlayer() {
+        if (player == null) {
+            player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(getActivity()),
+                    new DefaultTrackSelector(), new DefaultLoadControl());
+            playerView.setPlayer(player);
+            player.setPlayWhenReady(playWhenReady);
+            player.seekTo(currentWindow, playbackPosition);
+        }
+
+        MediaSource mediaSource =
+                buildMediaSource(Uri.parse(path));
+        player.prepare(mediaSource, true, false);
+    }
+
+    private void releasePlayer() {
+        if (player != null) {
+            playbackPosition = player.getCurrentPosition();
+            currentWindow = player.getCurrentWindowIndex();
+            playWhenReady = player.getPlayWhenReady();
+            player.release();
+            player = null;
+        }
+    }
+
+    private MediaSource buildMediaSource(Uri uri) {
+        return new ExtractorMediaSource.Factory(new DefaultHttpDataSourceFactory("exoplayer-codelab"))
+                .createMediaSource(uri);
+    }
+
+    @SuppressLint("InlinedApi")
+    private void hideSystemUi() {
+        playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+    }
+
+    private void hideVideoView(){
+        playerView.setVisibility(View.GONE);
+    }
+
 }

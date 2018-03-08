@@ -50,17 +50,17 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView tvId, tvName;
+        TextView tvServings, tvName;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            tvId = itemView.findViewById(R.id.tv_id);
+            tvServings = itemView.findViewById(R.id.tv_id);
             tvName = itemView.findViewById(R.id.tvName);
         }
 
         public void bind(final int position, final OnItemClickListener listener) {
-            tvId.setText(Integer.toString(recipeList.get(position).getId()));
+            tvServings.setText(Integer.toString(recipeList.get(position).getServings())+ " Servings");
             tvName.setText(recipeList.get(position).getName());
 
             itemView.setOnClickListener(new View.OnClickListener() {

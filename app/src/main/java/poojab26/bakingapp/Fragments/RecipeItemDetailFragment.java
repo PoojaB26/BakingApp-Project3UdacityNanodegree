@@ -3,11 +3,15 @@ package poojab26.bakingapp.Fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,6 +56,7 @@ public class RecipeItemDetailFragment extends Fragment {
 
     ListView lvIngredients;
     TextView tvIngredientsList;
+    TextView tvQuantityList;
 
     StepsAdapter stepsAdapter;
     RecyclerView stepsRecyclerView;
@@ -93,23 +98,38 @@ public class RecipeItemDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.recipe_item_detail, container, false);
-        TextView tvID = rootView.findViewById(R.id.item_text);
+      //  TextView tvID = rootView.findViewById(R.id.item_text);
         tvIngredientsList = rootView.findViewById(R.id.tvIngredientsList);
+        //tvQuantityList = rootView.findViewById(R.id.tvQuantity);
         stepsRecyclerView = rootView.findViewById(R.id.rvSteps);
 
         setupIngredientsList();
+      //  setupQuantityList();
         setupStepsAdapter();
-        tvID.setText(String.valueOf(mPositionID));
+       // tvID.setText(String.valueOf(mPositionID));
         return rootView;
     }
 
     private void setupIngredientsList() {
         StringBuilder stringIngredients = new StringBuilder();
+        String quantity, ingredient;
         for (int i = 0; i < mIngredients.size(); ++i) {
-            stringIngredients.append(mIngredients.get(i).getIngredient()+"\n");
+            quantity = mIngredients.get(i).getQuantity() + " "+ mIngredients.get(i).getMeasure();
+            ingredient = mIngredients.get(i).getIngredient();
+
+            stringIngredients.append(quantity + " " + ingredient + "\n");
         }
 
         tvIngredientsList.setText(stringIngredients);
+    }
+
+    private void setupQuantityList() {
+        StringBuilder stringQuantity = new StringBuilder();
+        for (int i = 0; i < mIngredients.size(); ++i) {
+            stringQuantity.append(mIngredients.get(i).getQuantity()+" "+ mIngredients.get(i).getMeasure()+"\n");
+        }
+
+        tvQuantityList.setText(stringQuantity);
     }
 
     private void setupStepsAdapter() {

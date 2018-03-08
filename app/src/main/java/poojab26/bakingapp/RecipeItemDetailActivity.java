@@ -50,9 +50,14 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
 
                 RecipeAppWidget.setRecipeName(recipeName);
 
+                String quantity, ingredient;
                 StringBuilder ingredientString = new StringBuilder();
                 for(int i=0; i<ingredientList.size(); i++){
-                      ingredientString.append(ingredientList.get(i).getIngredient()+"\n");
+                    quantity = ingredientList.get(i).getQuantity() + " "+ ingredientList.get(i).getMeasure();
+                    ingredient = ingredientList.get(i).getIngredient();
+
+                    ingredientString.append(quantity + " " + ingredient + "\n");
+
                  }
                 RecipeAppWidget.setIngredients(ingredientString);
                 Intent intent = new Intent(RecipeItemDetailActivity.this, RecipeAppWidget.class);

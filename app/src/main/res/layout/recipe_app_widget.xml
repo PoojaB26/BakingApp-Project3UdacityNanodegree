@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/widget_container"
-    android:background="#09C"
+    android:background="#eaf4f7"
     android:padding="@dimen/widget_margin">
 
 
@@ -13,10 +13,10 @@
         android:id="@+id/tvRecipeName"
         android:layout_centerHorizontal="true"
         android:layout_margin="8dp"
-        android:textColor="#ffffff"
-        android:textSize="24sp"
-        android:textStyle="bold|italic"
-        android:text="Brownies"/>
+        android:textColor="#000"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -25,9 +25,8 @@
         android:layout_below="@+id/tvRecipeName"
         android:maxLines="15"
         android:layout_centerHorizontal="true"
-        android:textColor="#ffffff"
-        android:textSize="24sp"
-        android:textStyle="bold|italic"
+        android:textColor="#3b3a3a"
+        android:textSize="14sp"
         android:layout_margin="8dp"/>
 
 </RelativeLayout>

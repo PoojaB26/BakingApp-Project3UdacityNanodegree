@@ -98,15 +98,11 @@ public class RecipeItemDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.recipe_item_detail, container, false);
-      //  TextView tvID = rootView.findViewById(R.id.item_text);
         tvIngredientsList = rootView.findViewById(R.id.tvIngredientsList);
-        //tvQuantityList = rootView.findViewById(R.id.tvQuantity);
         stepsRecyclerView = rootView.findViewById(R.id.rvSteps);
 
         setupIngredientsList();
-      //  setupQuantityList();
         setupStepsAdapter();
-       // tvID.setText(String.valueOf(mPositionID));
         return rootView;
     }
 
@@ -121,15 +117,6 @@ public class RecipeItemDetailFragment extends Fragment {
         }
 
         tvIngredientsList.setText(stringIngredients);
-    }
-
-    private void setupQuantityList() {
-        StringBuilder stringQuantity = new StringBuilder();
-        for (int i = 0; i < mIngredients.size(); ++i) {
-            stringQuantity.append(mIngredients.get(i).getQuantity()+" "+ mIngredients.get(i).getMeasure()+"\n");
-        }
-
-        tvQuantityList.setText(stringQuantity);
     }
 
     private void setupStepsAdapter() {
@@ -148,7 +135,6 @@ public class RecipeItemDetailFragment extends Fragment {
         mPositionID = id;
     }
     public void setTwoPane(boolean twoPane){ mTwoPane = twoPane;}
-
     public void setParentActivity(RecipeItemDetailActivity parentActivity) {
         mParentActivity = parentActivity;
     }

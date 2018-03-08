@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 
 
+import poojab26.bakingapp.Fragments.RecipeItemDetailFragment;
 import poojab26.bakingapp.Interfaces.RetrofitInterface;
 import poojab26.bakingapp.Utils.APIClient;
 import poojab26.bakingapp.Utils.Constants;
@@ -22,7 +23,6 @@ import poojab26.bakingapp.model.Step;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import timber.log.Timber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +79,7 @@ public class RecipeListActivity extends AppCompatActivity {
             mTwoPane = true;
         }
 
-        recipeRecyclerView = (RecyclerView) findViewById(R.id.rvRecipes);
+        recipeRecyclerView = findViewById(R.id.rvRecipes);
         if(recipeRecyclerView!=null){
             Log.d("TAG", "NOT NULL");
         }
@@ -118,8 +118,13 @@ public class RecipeListActivity extends AppCompatActivity {
                         bundle.putParcelableArrayList(RecipeItemDetailFragment.ARG_INGREDIENT, ingredients);
                         bundle.putParcelableArrayList(RecipeItemDetailFragment.ARG_STEPS, steps);
 
+                        Intent intent = new Intent(RecipeListActivity.this, RecipeItemDetailActivity.class);
+                        intent.putExtra(RecipeItemDetailFragment.ARG_ITEM_ID, position);
+                        intent.putExtra(Constants.BUNDLE_RECIPE, bundle);
 
-                        if(mTwoPane){
+                        startActivity(intent);
+
+                       /* if(mTwoPane){
                             RecipeItemDetailFragment fragment = new RecipeItemDetailFragment();
                             fragment.setArguments(bundle);
                             getSupportFragmentManager().beginTransaction()
@@ -132,7 +137,7 @@ public class RecipeListActivity extends AppCompatActivity {
                             intent.putExtra("bundle", bundle);
 
                             startActivity(intent);
-                        }
+                        }*/
 
                     }
                 } , RecipeListActivity.this, false));

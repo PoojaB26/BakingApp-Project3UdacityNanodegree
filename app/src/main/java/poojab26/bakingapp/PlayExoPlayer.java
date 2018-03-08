@@ -43,7 +43,7 @@ public class PlayExoPlayer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_exo_player);
 
-        playerView = findViewById(R.id.player_view);
+        playerView = findViewById(R.id.exoplayer);
     }
 
     @Override

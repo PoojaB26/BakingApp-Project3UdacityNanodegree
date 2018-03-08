@@ -1,6 +1,10 @@
 package poojab26.bakingapp.adapters;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +12,12 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import poojab26.bakingapp.Fragments.RecipeItemDetailFragment;
+import poojab26.bakingapp.Fragments.StepDetailFragment;
 import poojab26.bakingapp.R;
+import poojab26.bakingapp.RecipeItemDetailActivity;
+import poojab26.bakingapp.StepDetailActivity;
+import poojab26.bakingapp.Utils.Constants;
 import poojab26.bakingapp.model.Step;
 
 
@@ -17,16 +26,18 @@ import poojab26.bakingapp.model.Step;
  */
 
 public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder>{
-    public StepsAdapter(ArrayList<Step> steps, OnItemClickListener listener) {
+    public StepsAdapter(RecipeItemDetailActivity parentActivity, boolean twoPane, ArrayList<Step> steps, OnItemClickListener listener) {
+        mTwoPane = twoPane;
         stepArrayList = steps;
         mListener = listener;
-       // mParentActivity = parentActivity;
+        mParentActivity = parentActivity;
     }
 
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
-  //  private final RecipeListActivity mParentActivity;
+    private final RecipeItemDetailActivity mParentActivity;
+    private final boolean mTwoPane;
     private final ArrayList<Step> stepArrayList;
     private final OnItemClickListener mListener;
 
@@ -59,14 +70,45 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder>{
         }
 
         public void bind(final int position, final OnItemClickListener listener) {
-            tvStepDescription.setText(stepArrayList.get(position).getDescription());
+            tvStepDescription.setText(stepArrayList.get(position).getShortDescription());
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     listener.onItemClick(position);
 
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(StepDetailFragment.ARG_STEP_POSITION_ID, position);
+                    Log.d(Constants.TAG, "Steps Adapter pos " + position);
+                    bundle.putParcelableArrayList(RecipeItemDetailFragment.ARG_STEPS, stepArrayList);
 
+                    Log.d(Constants.TAG, "two pane" + mTwoPane);
+                    if(mTwoPane){
+                        StepDetailFragment fragment = new StepDetailFragment();
+                        fragment.setPosition(position);
+                        fragment.setSteps(stepArrayList);
+                        fragment.setTwoPane(true);
+
+
+
+
+                        mParentActivity.getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.sw600, fragment, null)
+                                .commit();
+
+                    }else {
+                        Context context = view.getContext();
+                        Intent intent = new Intent(context, StepDetailActivity.class);
+                        intent.putExtra(Constants.BUNDLE_RECIPE, bundle);
+                        context.startActivity(intent);
+
+                    }
+                   /* Context context = view.getContext();
+                    Intent intent = new Intent(context, StepDetailActivity.class);
+                   // intent.putExtra(RecipeItemDetailFragment.ARG_ITEM_ID, position);
+
+                    context.startActivity(intent);
+*/
 
                   //  Log.d("TAG", "clicked " + position + mTwoPane);
 

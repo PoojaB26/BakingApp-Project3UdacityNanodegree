@@ -3,12 +3,9 @@ package poojab26.bakingapp;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
@@ -16,6 +13,8 @@ import android.view.MenuItem;
 
 import java.util.ArrayList;
 
+import poojab26.bakingapp.Fragments.RecipeItemDetailFragment;
+import poojab26.bakingapp.Fragments.StepDetailFragment;
 import poojab26.bakingapp.Utils.Constants;
 import poojab26.bakingapp.model.Ingredient;
 import poojab26.bakingapp.model.Step;
@@ -27,7 +26,11 @@ import poojab26.bakingapp.model.Step;
  * in a {@link RecipeListActivity}.
  */
 public class RecipeItemDetailActivity extends AppCompatActivity {
-
+    /**
+     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
+     * device.
+     */
+    private boolean mTwoPane;
     ArrayList<Ingredient> ingredientList;
     ArrayList<Step> stepsList;
     Bundle extras;
@@ -37,9 +40,9 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_item_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
+       /* Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
-
+*/
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +71,16 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        if (findViewById(R.id.sw600) != null) {
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-w900dp).
+            // If this view is present, then the
+            // activity should be in two-pane mode.
+            mTwoPane = true;
+        }
+
+
+
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
         // (e.g. when rotating the screen from portrait to landscape).
@@ -81,18 +94,33 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             int position_ID = getIntent().getIntExtra(RecipeItemDetailFragment.ARG_ITEM_ID, 0);
-            extras = getIntent().getBundleExtra("bundle");
+            extras = getIntent().getBundleExtra(Constants.BUNDLE_RECIPE);
             if(extras!=null)
             {
                 recipeName = extras.getString(RecipeItemDetailFragment.ARG_RECIPE_NAME);
                 ingredientList  = extras.getParcelableArrayList(RecipeItemDetailFragment.ARG_INGREDIENT);
                 stepsList = extras.getParcelableArrayList(RecipeItemDetailFragment.ARG_STEPS);
             }
-            RecipeItemDetailFragment fragment = new RecipeItemDetailFragment();
-            fragment.setArguments(extras);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.item_detail_container, fragment)
-                    .commit();
+
+            //if(mTwoPane) {
+                RecipeItemDetailFragment fragment = new RecipeItemDetailFragment();
+                fragment.setArguments(extras);
+                fragment.setTwoPane(mTwoPane);
+                fragment.setParentActivity(RecipeItemDetailActivity.this);
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.item_detail_container, fragment)
+                        .commit();
+
+
+
+            /*}
+            else{
+                Intent intent = new Intent(RecipeItemDetailActivity.this, StepDetailActivity.class);
+                intent.putExtra(RecipeItemDetailFragment.ARG_ITEM_ID, position_ID);
+                intent.putExtra(Constants.BUNDLE_RECIPE, extras);
+
+                startActivity(intent);
+            }*/
         }
     }
 

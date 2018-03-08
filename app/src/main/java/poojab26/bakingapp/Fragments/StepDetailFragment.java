@@ -1,12 +1,10 @@
-package poojab26.bakingapp;
+package poojab26.bakingapp.Fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,41 +14,34 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.hls.HlsMediaSource;
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
-import com.google.android.exoplayer2.upstream.BandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
 import java.util.ArrayList;
-import java.util.concurrent.CopyOnWriteArrayList;
 
+import poojab26.bakingapp.R;
 import poojab26.bakingapp.Utils.Constants;
 import poojab26.bakingapp.model.Step;
 
-public class StepItemFragment extends Fragment {
+import static poojab26.bakingapp.Fragments.RecipeItemDetailFragment.ARG_STEPS;
+
+public class StepDetailFragment extends Fragment {
+
+    public static final String ARG_STEP_POSITION_ID = "step_position_id";
 
     private ArrayList<Step> mSteps;
     private int mStepPositionID;
+    private boolean mTwoPane = false;
     Button btnNext, btnPrev;
     private View rootView;
-    Context context;
 
     private SimpleExoPlayer player;
     private SimpleExoPlayerView playerView;
@@ -64,7 +55,9 @@ public class StepItemFragment extends Fragment {
     private final String STATE_PLAYER_FULLSCREEN = "playerFullscreen";
     private final String VIDEO_PATH = "video_path";
     private final String STEPS_OBJECT = "steps_object";
-    private final String STEPS_POSITION_ID = "steps_position";
+    private final String STEPS_POSITION = "steps_position";
+    private final String PLAYER_POSITION = "player_position";
+    private final String TWO_PANE = "two_pane";
 
     private MediaSource mVideoSource;
     private boolean mExoPlayerFullscreen = false;
@@ -77,9 +70,9 @@ public class StepItemFragment extends Fragment {
     FrameLayout frameLayout;
     String path;
 
-    ViewGroup mContainer;
+    int layout_element;
 
-    public StepItemFragment() {
+    public StepDetailFragment() {
         // Required empty public constructor
     }
 
@@ -93,7 +86,9 @@ public class StepItemFragment extends Fragment {
             mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_PLAYER_FULLSCREEN);
             path = savedInstanceState.getString(VIDEO_PATH);
             mSteps = savedInstanceState.getParcelableArrayList(STEPS_OBJECT);
-            mStepPositionID = savedInstanceState.getInt(STEPS_POSITION_ID);
+            mStepPositionID = savedInstanceState.getInt(STEPS_POSITION);
+            playbackPosition = savedInstanceState.getLong(PLAYER_POSITION);
+         //   mTwoPane = savedInstanceState.getBoolean(TWO_PANE);
         }
 
         // StepItemFragmentTest fragment = new StepItemFragmentTest();
@@ -101,6 +96,8 @@ public class StepItemFragment extends Fragment {
 
         if(mSteps!=null)
             path = mSteps.get(mStepPositionID).getVideoURL();
+
+
 
 
     }
@@ -112,7 +109,9 @@ public class StepItemFragment extends Fragment {
         outState.putBoolean(STATE_PLAYER_FULLSCREEN, mExoPlayerFullscreen);
         outState.putString(VIDEO_PATH, path);
         outState.putParcelableArrayList(STEPS_OBJECT, mSteps);
-        outState.putInt(STEPS_POSITION_ID, mStepPositionID);
+        outState.putInt(STEPS_POSITION, mStepPositionID);
+        outState.putLong(PLAYER_POSITION, playbackPosition);
+        //outState.putBoolean(TWO_PANE, mTwoPane);
 
         super.onSaveInstanceState(outState);
     }
@@ -120,38 +119,48 @@ public class StepItemFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        context = getContext();
-        mContainer = container;
-        Log.d(Constants.TAG, "OnCreateView " + container);
+        Log.d(Constants.TAG, "OnCreateView");
         rootView = inflater.inflate(R.layout.fragment_step_item, container, false);
         btnNext = rootView.findViewById(R.id.btnNext);
         btnPrev = rootView.findViewById(R.id.btnPrev);
 
         playerView = rootView.findViewById(R.id.exoplayer);
         frameLayout =  rootView.findViewById(R.id.main_media_frame);
+        TextView tvDescription = rootView.findViewById(R.id.tvStepDescription);
 
-        PlaybackControlView controlView = playerView.findViewById(R.id.exo_controller);
+       /* Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            mStepPositionID = bundle.getInt(StepDetailFragment.ARG_STEP_POSITION_ID, 0);
+            Log.d(Constants.TAG, "step position ID from fragment " + mStepPositionID);
+            mSteps = bundle.getParcelableArrayList(ARG_STEPS);
+            if(mSteps!=null)
+                path = mSteps.get(mStepPositionID).getVideoURL();
+
+        }*/
+
+
+
+      /*  PlaybackControlView controlView = playerView.findViewById(R.id.exo_controller);
         mFullScreenIcon = controlView.findViewById(R.id.exo_fullscreen_icon);
         mFullScreenButton = controlView.findViewById(R.id.exo_fullscreen_button);
-
-
-
-
+*/
         if(frameLayout!=null && mSteps!=null) {
 
-            TextView tvDescription = rootView.findViewById(R.id.tvStepDescription);
             tvDescription.setText(mSteps.get(mStepPositionID).getDescription());
-
+            if(mTwoPane)
+                layout_element = R.id.sw600;
+            else layout_element = R.id.frame_step_detail;
 
             btnNext.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (mStepPositionID < mSteps.size() - 1) {
-                        StepItemFragment fragment = new StepItemFragment();
+                        StepDetailFragment fragment = new StepDetailFragment();
                         fragment.setSteps(mSteps);
                         fragment.setPosition(mStepPositionID + 1);
+                        fragment.setTwoPane(mTwoPane);
                         getActivity().getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.item_detail_container, fragment, null)
+                                .replace(layout_element, fragment, null)
                                 .commit();
                     }
 
@@ -163,11 +172,12 @@ public class StepItemFragment extends Fragment {
                 public void onClick(View view) {
                     if (mStepPositionID > 0) {
 
-                        StepItemFragment fragment = new StepItemFragment();
+                        StepDetailFragment fragment = new StepDetailFragment();
                         fragment.setSteps(mSteps);
                         fragment.setPosition(mStepPositionID - 1);
+                        fragment.setTwoPane(mTwoPane);
                         getActivity().getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.item_detail_container, fragment, null)
+                                .replace(layout_element, fragment, null)
                                 .commit();
 
                     }
@@ -190,6 +200,8 @@ public class StepItemFragment extends Fragment {
         mStepPositionID = position;
     }
 
+    public void setTwoPane(boolean twoPane){ mTwoPane = twoPane;}
+
 
     @Override
     public void onStart() {
@@ -206,45 +218,20 @@ public class StepItemFragment extends Fragment {
         super.onResume();
 
         hideSystemUi();
-        if(playerView == null){
-            playerView = rootView.findViewById(R.id.exoplayer);
-
-        }
-        if ((Util.SDK_INT <= 23 || player == null )) {
-
+        if ((Util.SDK_INT <= 23 || player == null)) {
             if(!path.equals(""))
                 initializePlayer();
             else hideVideoView();
         }
-
-        if (mExoPlayerFullscreen) {
-            ((ViewGroup) playerView.getParent()).removeView(playerView);
-            mFullScreenDialog.addContentView(playerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_fullscreen_skrink));
-            mFullScreenDialog.show();
-        }
-
-
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        Log.d(Constants.TAG, "onPause" + path);
 
         if (Util.SDK_INT <= 23) {
-            // releasePlayer();
-
-
-            if (playerView != null && playerView.getPlayer() != null) {
-                mResumeWindow = playerView.getPlayer().getCurrentWindowIndex();
-                mResumePosition = Math.max(0, playerView.getPlayer().getContentPosition());
-
-                playerView.getPlayer().release();
-            }
-
-            if (mFullScreenDialog != null)
-                mFullScreenDialog.dismiss();
-
+            releasePlayer();
         }
     }
 
@@ -259,15 +246,13 @@ public class StepItemFragment extends Fragment {
     }
 
     private void initializePlayer() {
-      //  if (player == null) {
-            initFullscreenDialog();
-            initFullscreenButton();
+        if (player == null) {
             player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(getActivity()),
                     new DefaultTrackSelector(), new DefaultLoadControl());
             playerView.setPlayer(player);
             player.setPlayWhenReady(playWhenReady);
             player.seekTo(currentWindow, playbackPosition);
-
+        }
 
         MediaSource mediaSource =
                 buildMediaSource(Uri.parse(path));
@@ -275,7 +260,6 @@ public class StepItemFragment extends Fragment {
     }
 
     private void releasePlayer() {
-        Log.d(Constants.TAG, "release ");
         if (player != null) {
             playbackPosition = player.getCurrentPosition();
             currentWindow = player.getCurrentWindowIndex();
@@ -302,56 +286,6 @@ public class StepItemFragment extends Fragment {
 
     private void hideVideoView(){
         playerView.setVisibility(View.GONE);
-    }
-
-
-    private void initFullscreenDialog() {
-
-        mFullScreenDialog = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar_Fullscreen) {
-            public void onBackPressed() {
-                if (mExoPlayerFullscreen)
-                    closeFullscreenDialog();
-                super.onBackPressed();
-            }
-        };
-    }
-
-    private void openFullscreenDialog() {
-
-        ((ViewGroup) playerView.getParent()).removeView(playerView);
-        mFullScreenDialog.addContentView(playerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_fullscreen_skrink));
-        mExoPlayerFullscreen = true;
-        mFullScreenDialog.show();
-    }
-
-
-    private void closeFullscreenDialog() {
-        Log.d(Constants.TAG, "close full screen dialog");
-        frameLayout.removeView(playerView);
-        frameLayout =  rootView.findViewById(R.id.main_media_frame);
-        playerView = rootView.findViewById(R.id.exoplayer);
-
-        mExoPlayerFullscreen = false;
-        mFullScreenDialog.dismiss();
-        mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_fullscreen_expand));
-
-
-    }
-
-
-    private void initFullscreenButton() {
-
-
-        mFullScreenButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mExoPlayerFullscreen)
-                    openFullscreenDialog();
-                else
-                    closeFullscreenDialog();
-            }
-        });
     }
 
 }

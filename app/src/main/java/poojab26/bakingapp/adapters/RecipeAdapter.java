@@ -1,7 +1,6 @@
 package poojab26.bakingapp.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import poojab26.bakingapp.RecipeItemDetailFragment;
 import poojab26.bakingapp.RecipeListActivity;
 import poojab26.bakingapp.R;
 import poojab26.bakingapp.model.Recipe;

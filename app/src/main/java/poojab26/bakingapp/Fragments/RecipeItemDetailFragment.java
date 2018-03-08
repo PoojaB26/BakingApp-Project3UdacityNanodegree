@@ -1,6 +1,8 @@
-package poojab26.bakingapp;
+package poojab26.bakingapp.Fragments;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +18,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import poojab26.bakingapp.R;
+import poojab26.bakingapp.RecipeItemDetailActivity;
+import poojab26.bakingapp.RecipeListActivity;
+import poojab26.bakingapp.StepDetailActivity;
 import poojab26.bakingapp.Utils.Constants;
 import poojab26.bakingapp.adapters.StepsAdapter;
 import poojab26.bakingapp.model.Ingredient;
@@ -39,8 +45,10 @@ public class RecipeItemDetailFragment extends Fragment {
 
 
     private int mPositionID;
+    private boolean mTwoPane;
     private ArrayList<Ingredient> mIngredients;
     private ArrayList<Step> mSteps;
+    RecipeItemDetailActivity mParentActivity;
 
     ListView lvIngredients;
     TextView tvIngredientsList;
@@ -59,6 +67,11 @@ public class RecipeItemDetailFragment extends Fragment {
      * fragment (e.g. upon screen orientation changes).
      */
     public RecipeItemDetailFragment() {
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
     }
 
     @Override
@@ -82,11 +95,11 @@ public class RecipeItemDetailFragment extends Fragment {
         }
 
 
-        Activity activity = this.getActivity();
+       /* Activity activity = this.getActivity();
         CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
         if (appBarLayout != null) {
             //  appBarLayout.setTitle(mItem.content);
-        }
+        }*/
         // }
     }
 
@@ -100,7 +113,6 @@ public class RecipeItemDetailFragment extends Fragment {
         stepsRecyclerView = rootView.findViewById(R.id.rvSteps);
 
         setupIngredientsList();
-        //setupListViewIngredients();
         setupStepsAdapter();
         tvID.setText(String.valueOf(mPositionID));
         return rootView;
@@ -118,16 +130,30 @@ public class RecipeItemDetailFragment extends Fragment {
     private void setupStepsAdapter() {
         layoutManager = new LinearLayoutManager(getActivity());
         stepsRecyclerView.setLayoutManager(layoutManager);
-        stepsRecyclerView.setAdapter(new StepsAdapter(mSteps, new StepsAdapter.OnItemClickListener() {
+        stepsRecyclerView.setAdapter(new StepsAdapter(mParentActivity, mTwoPane, mSteps, new StepsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
 
-                StepItemFragment fragment = new StepItemFragment();
+               /* Bundle bundle = new Bundle();
+                bundle.putInt(StepDetailFragment.ARG_STEP_POSITION_ID, position);
+                Log.d(Constants.TAG, "Recipe Detail Fragment position " + position);
+                bundle.putParcelableArrayList(RecipeItemDetailFragment.ARG_STEPS, mSteps);
+
+                Intent intent = new Intent(getActivity(), StepDetailActivity.class);
+                intent.putExtra(Constants.BUNDLE_RECIPE, bundle);
+                startActivity(intent);*/
+
+               /* Intent intent = new Intent(context, StepDetailActivity.class);
+                // intent.putExtra(RecipeItemDetailFragment.ARG_ITEM_ID, position);
+
+                context.startActivity(intent);*/
+
+               /* StepDetailFragment fragment = new StepDetailFragment();
                 fragment.setSteps(mSteps);
                 fragment.setPosition(position);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.item_detail_container, fragment, null)
-                        .commit();
+                        .commit();*/
             }
         }));
     }
@@ -148,11 +174,9 @@ public class RecipeItemDetailFragment extends Fragment {
     public void setId(int id) {
         mPositionID = id;
     }
-  /*  public void setIngredients(ArrayList<Ingredient> ingredients) {
-        mIngredients = ingredients;
-    }
-    public void setSteps(ArrayList<Step> steps) {
-        mSteps = steps;
-    }*/
+    public void setTwoPane(boolean twoPane){ mTwoPane = twoPane;}
 
+    public void setParentActivity(RecipeItemDetailActivity parentActivity) {
+        mParentActivity = parentActivity;
+    }
 }

@@ -41,12 +41,8 @@ public class RecipeListActivity extends AppCompatActivity {
     private List<Recipe> recipeList = new ArrayList<>();
 
 
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
-    private boolean mTwoPane;
-    RecipeAdapter recipeAdapter;
+
+
     RetrofitInterface retrofitInterface;
     RecyclerView recipeRecyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -55,8 +51,6 @@ public class RecipeListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_item_list);
-
-
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -71,19 +65,8 @@ public class RecipeListActivity extends AppCompatActivity {
             }
         });
 
-        if (findViewById(R.id.item_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            mTwoPane = true;
-        }
-
         recipeRecyclerView = findViewById(R.id.rvRecipes);
-        if(recipeRecyclerView!=null){
-            Log.d("TAG", "NOT NULL");
-        }
-             setupRecyclerView();
+        setupRecyclerView();
 
 
     }
@@ -124,23 +107,8 @@ public class RecipeListActivity extends AppCompatActivity {
 
                         startActivity(intent);
 
-                       /* if(mTwoPane){
-                            RecipeItemDetailFragment fragment = new RecipeItemDetailFragment();
-                            fragment.setArguments(bundle);
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.item_detail_container, fragment)
-                                    .commit();
-
-                        }else {
-                            Intent intent = new Intent(RecipeListActivity.this, RecipeItemDetailActivity.class);
-                            intent.putExtra(RecipeItemDetailFragment.ARG_ITEM_ID, position);
-                            intent.putExtra("bundle", bundle);
-
-                            startActivity(intent);
-                        }*/
-
                     }
-                } , RecipeListActivity.this, false));
+                }));
             }
 
             @Override

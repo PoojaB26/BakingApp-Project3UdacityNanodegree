@@ -79,18 +79,13 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder>{
 
                     Bundle bundle = new Bundle();
                     bundle.putInt(StepDetailFragment.ARG_STEP_POSITION_ID, position);
-                    Log.d(Constants.TAG, "Steps Adapter pos " + position);
                     bundle.putParcelableArrayList(RecipeItemDetailFragment.ARG_STEPS, stepArrayList);
 
-                    Log.d(Constants.TAG, "two pane" + mTwoPane);
                     if(mTwoPane){
                         StepDetailFragment fragment = new StepDetailFragment();
                         fragment.setPosition(position);
                         fragment.setSteps(stepArrayList);
                         fragment.setTwoPane(true);
-
-
-
 
                         mParentActivity.getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.sw600, fragment, null)
@@ -103,32 +98,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder>{
                         context.startActivity(intent);
 
                     }
-                   /* Context context = view.getContext();
-                    Intent intent = new Intent(context, StepDetailActivity.class);
-                   // intent.putExtra(RecipeItemDetailFragment.ARG_ITEM_ID, position);
 
-                    context.startActivity(intent);
-*/
-
-                  //  Log.d("TAG", "clicked " + position + mTwoPane);
-
-                 /*   if (mTwoPane) {
-                       *//* Bundle arguments = new Bundle();
-                        arguments.putString(RecipeItemDetailFragment.ARG_ITEM_ID, Integer.toString(5));*//*
-                        RecipeItemDetailFragment fragment = new RecipeItemDetailFragment();
-                        fragment.setId(5);
-                        mParentActivity.getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.item_detail_container, fragment)
-                                .commit();
-                    } else {
-                        Log.d("TAG", "twopane " +  mTwoPane);
-
-                        *//*Context context = view.getContext();
-                        Intent intent = new Intent(context, RecipeItemDetailActivity.class);
-                        intent.putExtra(RecipeItemDetailFragment.ARG_ITEM_ID, position);
-
-                        context.startActivity(intent);*//*
-                    }*/
                 }
             });
         }

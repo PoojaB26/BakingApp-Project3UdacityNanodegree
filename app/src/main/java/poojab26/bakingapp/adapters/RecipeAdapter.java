@@ -18,18 +18,15 @@ import poojab26.bakingapp.model.Recipe;
  */
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder>{
-    public RecipeAdapter(List<Recipe> recipes, OnItemClickListener listener, RecipeListActivity parentActivity, boolean twoPane) {
+    public RecipeAdapter(List<Recipe> recipes, OnItemClickListener listener) {
         recipeList = recipes;
         mListener = listener;
-        mParentActivity = parentActivity;
-        mTwoPane = twoPane;
+
     }
 
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
-    private final RecipeListActivity mParentActivity;
-    private final boolean mTwoPane;
     private final List<Recipe> recipeList;
     private final OnItemClickListener mListener;
 

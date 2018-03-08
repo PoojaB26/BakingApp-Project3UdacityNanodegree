@@ -102,7 +102,6 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
                 stepsList = extras.getParcelableArrayList(RecipeItemDetailFragment.ARG_STEPS);
             }
 
-            //if(mTwoPane) {
                 RecipeItemDetailFragment fragment = new RecipeItemDetailFragment();
                 fragment.setArguments(extras);
                 fragment.setTwoPane(mTwoPane);
@@ -113,14 +112,6 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
 
 
 
-            /*}
-            else{
-                Intent intent = new Intent(RecipeItemDetailActivity.this, StepDetailActivity.class);
-                intent.putExtra(RecipeItemDetailFragment.ARG_ITEM_ID, position_ID);
-                intent.putExtra(Constants.BUNDLE_RECIPE, extras);
-
-                startActivity(intent);
-            }*/
         }
     }
 

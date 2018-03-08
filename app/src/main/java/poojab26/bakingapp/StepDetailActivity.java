@@ -23,11 +23,9 @@ public class StepDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_detail);
-        Log.d(Constants.TAG, "step detail");
         extras = getIntent().getBundleExtra(Constants.BUNDLE_RECIPE);
 
             if (extras != null) {
-                Log.d(Constants.TAG, "nt null extras");
 
                 int position_ID = extras.getInt(StepDetailFragment.ARG_STEP_POSITION_ID);
                 ArrayList<Step> stepsList = extras.getParcelableArrayList(RecipeItemDetailFragment.ARG_STEPS);
@@ -38,10 +36,8 @@ public class StepDetailActivity extends AppCompatActivity {
                         .add(R.id.frame_step_detail, fragment)
                         .commit();
 
-            }else
-                Log.d(Constants.TAG, "null extras");
+            }
 
-        // }
 
 
 

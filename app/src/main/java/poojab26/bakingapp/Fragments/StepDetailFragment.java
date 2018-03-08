@@ -128,16 +128,6 @@ public class StepDetailFragment extends Fragment {
         frameLayout =  rootView.findViewById(R.id.main_media_frame);
         TextView tvDescription = rootView.findViewById(R.id.tvStepDescription);
 
-       /* Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            mStepPositionID = bundle.getInt(StepDetailFragment.ARG_STEP_POSITION_ID, 0);
-            Log.d(Constants.TAG, "step position ID from fragment " + mStepPositionID);
-            mSteps = bundle.getParcelableArrayList(ARG_STEPS);
-            if(mSteps!=null)
-                path = mSteps.get(mStepPositionID).getVideoURL();
-
-        }*/
-
 
 
       /*  PlaybackControlView controlView = playerView.findViewById(R.id.exo_controller);
@@ -217,7 +207,7 @@ public class StepDetailFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        hideSystemUi();
+      //  hideSystemUi();
         if ((Util.SDK_INT <= 23 || player == null)) {
             if(!path.equals(""))
                 initializePlayer();
@@ -274,7 +264,7 @@ public class StepDetailFragment extends Fragment {
                 .createMediaSource(uri);
     }
 
-    @SuppressLint("InlinedApi")
+   /* @SuppressLint("InlinedApi")
     private void hideSystemUi() {
         playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
@@ -282,7 +272,7 @@ public class StepDetailFragment extends Fragment {
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-    }
+    }*/
 
     private void hideVideoView(){
         playerView.setVisibility(View.GONE);

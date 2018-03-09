@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.View;
 
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import poojab26.bakingapp.Fragments.RecipeItemDetailFragment;
 import poojab26.bakingapp.Interfaces.RetrofitInterface;
 import poojab26.bakingapp.Utils.APIClient;
@@ -45,19 +47,20 @@ public class RecipeListActivity extends AppCompatActivity {
 
 
     RetrofitInterface retrofitInterface;
-    RecyclerView recipeRecyclerView;
     RecyclerView.LayoutManager layoutManager;
+
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.rvRecipes) RecyclerView recipeRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_item_list);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,7 +69,6 @@ public class RecipeListActivity extends AppCompatActivity {
             }
         });
 
-        recipeRecyclerView = findViewById(R.id.rvRecipes);
         setupRecyclerView();
 
 

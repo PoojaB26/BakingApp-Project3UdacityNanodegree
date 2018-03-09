@@ -13,6 +13,8 @@ import android.view.MenuItem;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import poojab26.bakingapp.Fragments.RecipeItemDetailFragment;
 import poojab26.bakingapp.Fragments.StepDetailFragment;
 import poojab26.bakingapp.Utils.Constants;
@@ -36,6 +38,7 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
     Bundle extras;
     String recipeName;
 
+    @BindView(R.id.fab) FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +46,7 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
        /* Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 */
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        ButterKnife.bind(this);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

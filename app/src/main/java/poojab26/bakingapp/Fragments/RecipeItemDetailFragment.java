@@ -2,17 +2,10 @@ package poojab26.bakingapp.Fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Typeface;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,21 +15,16 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import poojab26.bakingapp.R;
 import poojab26.bakingapp.RecipeItemDetailActivity;
 import poojab26.bakingapp.RecipeListActivity;
-import poojab26.bakingapp.StepDetailActivity;
-import poojab26.bakingapp.Utils.Constants;
 import poojab26.bakingapp.adapters.StepsAdapter;
 import poojab26.bakingapp.model.Ingredient;
 import poojab26.bakingapp.model.Step;
 
-/**
- * A fragment representing a single Item detail screen.
- * This fragment is either contained in a {@link RecipeListActivity}
- * in two-pane mode (on tablets) or a {@link RecipeItemDetailActivity}
- * on handsets.
- */
+
 public class RecipeItemDetailFragment extends Fragment {
     /**
      * The fragment argument representing the item ID that this fragment
@@ -54,23 +42,10 @@ public class RecipeItemDetailFragment extends Fragment {
     private ArrayList<Step> mSteps;
     RecipeItemDetailActivity mParentActivity;
 
-    ListView lvIngredients;
-    TextView tvIngredientsList;
-    TextView tvQuantityList;
-
-    StepsAdapter stepsAdapter;
-    RecyclerView stepsRecyclerView;
+    @BindView(R.id.tvIngredientsList)TextView tvIngredientsList;
+    @BindView(R.id.rvSteps) RecyclerView stepsRecyclerView;
     RecyclerView.LayoutManager layoutManager;
 
-    /**
-     * The dummy content this fragment is presenting.
-     */
-    private int mItem;
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public RecipeItemDetailFragment() {
     }
 
@@ -98,8 +73,7 @@ public class RecipeItemDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.recipe_item_detail, container, false);
-        tvIngredientsList = rootView.findViewById(R.id.tvIngredientsList);
-        stepsRecyclerView = rootView.findViewById(R.id.rvSteps);
+        ButterKnife.bind(this, rootView);
 
         setupIngredientsList();
         setupStepsAdapter();

@@ -88,7 +88,7 @@ public class StepDetailFragment extends Fragment {
             mSteps = savedInstanceState.getParcelableArrayList(STEPS_OBJECT);
             mStepPositionID = savedInstanceState.getInt(STEPS_POSITION);
             playbackPosition = savedInstanceState.getLong(PLAYER_POSITION);
-         //   mTwoPane = savedInstanceState.getBoolean(TWO_PANE);
+            //   mTwoPane = savedInstanceState.getBoolean(TWO_PANE);
         }
 
         // StepItemFragmentTest fragment = new StepItemFragmentTest();
@@ -207,7 +207,7 @@ public class StepDetailFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-      //  hideSystemUi();
+        //  hideSystemUi();
         if ((Util.SDK_INT <= 23 || player == null)) {
             if(!path.equals(""))
                 initializePlayer();

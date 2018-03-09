@@ -38,6 +38,7 @@ public class StepDetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
+        Log.d(Constants.TAG, "Activity");
 
         extras = getIntent().getBundleExtra(Constants.BUNDLE_RECIPE);
 

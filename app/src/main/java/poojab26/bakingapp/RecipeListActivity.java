@@ -60,7 +60,10 @@ public class RecipeListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView() {
-        layoutManager = new GridLayoutManager(this, 2);
+        if(findViewById(R.id.sw_grid)!=null)
+             layoutManager = new GridLayoutManager(this, 2);
+        else
+            layoutManager = new LinearLayoutManager(this);
         recipeRecyclerView.setLayoutManager(layoutManager);
         loadRecipes();
     }

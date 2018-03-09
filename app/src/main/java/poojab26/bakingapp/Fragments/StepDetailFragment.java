@@ -42,6 +42,7 @@ public class StepDetailFragment extends Fragment {
     private boolean mTwoPane = false;
     Button btnNext, btnPrev;
     private View rootView;
+    TextView tvDescription;
 
     private SimpleExoPlayer player;
     private SimpleExoPlayerView playerView;
@@ -81,8 +82,6 @@ public class StepDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
 
-            Log.d(Constants.TAG, "oncreate save " + mStepPositionID);
-
 
             mResumeWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW);
             mResumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
@@ -102,10 +101,6 @@ public class StepDetailFragment extends Fragment {
         if(mSteps!=null)
             path = mSteps.get(mStepPositionID).getVideoURL();
 
-        Log.d(Constants.TAG, "OnCreate " + mStepPositionID);
-
-
-
     }
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -120,9 +115,6 @@ public class StepDetailFragment extends Fragment {
         outState.putLong(PLAYER_POSITION, playbackPosition);
         //outState.putBoolean(TWO_PANE, mTwoPane);
 
-        Log.d(Constants.TAG, "onSave " + mStepPositionID);
-
-
     }
 
     @Override
@@ -132,16 +124,18 @@ public class StepDetailFragment extends Fragment {
             container.removeAllViews();
         }
         rootView = inflater.inflate(R.layout.fragment_step_item, container, false);
-        btnNext = rootView.findViewById(R.id.btnNext);
-        btnPrev = rootView.findViewById(R.id.btnPrev);
+        if(rootView.findViewById(R.id.container_land)==null){
+            btnNext = rootView.findViewById(R.id.btnNext);
+            btnPrev = rootView.findViewById(R.id.btnPrev);
+            tvDescription = rootView.findViewById(R.id.tvStepDescription);
+
+        }
+        Log.d(Constants.TAG, "oncreateview fragment");
+
 
 
         playerView = rootView.findViewById(R.id.exoplayer);
         frameLayout =  rootView.findViewById(R.id.main_media_frame);
-        TextView tvDescription = rootView.findViewById(R.id.tvStepDescription);
-
-        Log.d(Constants.TAG, "OnCreateView " + mStepPositionID);
-
 
 
       /*  PlaybackControlView controlView = playerView.findViewById(R.id.exo_controller);
@@ -149,9 +143,6 @@ public class StepDetailFragment extends Fragment {
         mFullScreenButton = controlView.findViewById(R.id.exo_fullscreen_button);
       */
         if(frameLayout!=null && mSteps!=null) {
-
-            Log.d(Constants.TAG, "before button clicks " + mStepPositionID);
-
 
             tvDescription.setText(mSteps.get(mStepPositionID).getDescription());
             if(mTwoPane)
@@ -227,9 +218,8 @@ public class StepDetailFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(Constants.TAG, "onResume " + mStepPositionID);
 
-          hideSystemUi();
+          //hideSystemUi();
         if ((Util.SDK_INT <= 23 || player == null)) {
             if(!path.equals(""))
                 initializePlayer();
@@ -240,7 +230,6 @@ public class StepDetailFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.d(Constants.TAG, "onPause " + mStepPositionID);
 
 
         if (Util.SDK_INT <= 23) {
@@ -251,7 +240,6 @@ public class StepDetailFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(Constants.TAG, "OnStop " + mStepPositionID);
 
         if (Util.SDK_INT > 23) {
             releasePlayer();

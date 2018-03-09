@@ -79,8 +79,11 @@ public class StepDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(Constants.TAG, "onCreate");
         if (savedInstanceState != null) {
+
+            Log.d(Constants.TAG, "oncreate save " + mStepPositionID);
+
+
             mResumeWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW);
             mResumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
             mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_PLAYER_FULLSCREEN);
@@ -89,20 +92,24 @@ public class StepDetailFragment extends Fragment {
             mStepPositionID = savedInstanceState.getInt(STEPS_POSITION);
             playbackPosition = savedInstanceState.getLong(PLAYER_POSITION);
             //   mTwoPane = savedInstanceState.getBoolean(TWO_PANE);
+
+
+
+
         }
 
-        // StepItemFragmentTest fragment = new StepItemFragmentTest();
-        // fragment.setSteps(mSteps);
 
         if(mSteps!=null)
             path = mSteps.get(mStepPositionID).getVideoURL();
 
+        Log.d(Constants.TAG, "OnCreate " + mStepPositionID);
 
 
 
     }
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
 
         outState.putInt(STATE_RESUME_WINDOW, mResumeWindow);
         outState.putLong(STATE_RESUME_POSITION, mResumePosition);
@@ -113,13 +120,17 @@ public class StepDetailFragment extends Fragment {
         outState.putLong(PLAYER_POSITION, playbackPosition);
         //outState.putBoolean(TWO_PANE, mTwoPane);
 
-        super.onSaveInstanceState(outState);
+        Log.d(Constants.TAG, "onSave " + mStepPositionID);
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(Constants.TAG, "OnCreateView");
+        if (container != null) {
+            container.removeAllViews();
+        }
         rootView = inflater.inflate(R.layout.fragment_step_item, container, false);
         btnNext = rootView.findViewById(R.id.btnNext);
         btnPrev = rootView.findViewById(R.id.btnPrev);
@@ -128,13 +139,18 @@ public class StepDetailFragment extends Fragment {
         frameLayout =  rootView.findViewById(R.id.main_media_frame);
         TextView tvDescription = rootView.findViewById(R.id.tvStepDescription);
 
+        Log.d(Constants.TAG, "OnCreateView " + mStepPositionID);
+
 
 
       /*  PlaybackControlView controlView = playerView.findViewById(R.id.exo_controller);
         mFullScreenIcon = controlView.findViewById(R.id.exo_fullscreen_icon);
         mFullScreenButton = controlView.findViewById(R.id.exo_fullscreen_button);
-*/
+      */
         if(frameLayout!=null && mSteps!=null) {
+
+            Log.d(Constants.TAG, "before button clicks " + mStepPositionID);
+
 
             tvDescription.setText(mSteps.get(mStepPositionID).getDescription());
             if(mTwoPane)
@@ -149,9 +165,11 @@ public class StepDetailFragment extends Fragment {
                         fragment.setSteps(mSteps);
                         fragment.setPosition(mStepPositionID + 1);
                         fragment.setTwoPane(mTwoPane);
+                        getActivity().getFragmentManager().popBackStack();
                         getActivity().getSupportFragmentManager().beginTransaction()
                                 .replace(layout_element, fragment, null)
                                 .commit();
+                        mStepPositionID = mStepPositionID+1;
                     }
 
                 }
@@ -166,9 +184,11 @@ public class StepDetailFragment extends Fragment {
                         fragment.setSteps(mSteps);
                         fragment.setPosition(mStepPositionID - 1);
                         fragment.setTwoPane(mTwoPane);
+                        getActivity().getFragmentManager().popBackStack();
                         getActivity().getSupportFragmentManager().beginTransaction()
                                 .replace(layout_element, fragment, null)
                                 .commit();
+                        mStepPositionID = mStepPositionID -1;
 
                     }
 
@@ -206,6 +226,7 @@ public class StepDetailFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(Constants.TAG, "onResume " + mStepPositionID);
 
         //  hideSystemUi();
         if ((Util.SDK_INT <= 23 || player == null)) {
@@ -218,7 +239,8 @@ public class StepDetailFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.d(Constants.TAG, "onPause" + path);
+        Log.d(Constants.TAG, "onPause " + mStepPositionID);
+
 
         if (Util.SDK_INT <= 23) {
             releasePlayer();
@@ -228,7 +250,7 @@ public class StepDetailFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(Constants.TAG, "onStop" + path);
+        Log.d(Constants.TAG, "OnStop " + mStepPositionID);
 
         if (Util.SDK_INT > 23) {
             releasePlayer();
@@ -260,7 +282,7 @@ public class StepDetailFragment extends Fragment {
     }
 
     private MediaSource buildMediaSource(Uri uri) {
-        return new ExtractorMediaSource.Factory(new DefaultHttpDataSourceFactory("exoplayer-codelab"))
+        return new ExtractorMediaSource.Factory(new DefaultHttpDataSourceFactory("exoplayer"))
                 .createMediaSource(uri);
     }
 

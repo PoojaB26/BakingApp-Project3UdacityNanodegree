@@ -31,6 +31,8 @@ import poojab26.bakingapp.model.Step;
  */
 public class RecipeItemDetailActivity extends AppCompatActivity {
     private final static String RECIPE_NAME = "recipe_name";
+    private final static String INGREDIENT_LIST = "ingredient_list";
+    private final static String STEPS_LIST = "steps_list";
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
@@ -51,12 +53,11 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        Log.d(Constants.TAG, "OnCreate Recipe Detail Actvity " + savedInstanceState);
-
         setSupportActionBar(toolbar);
         if(savedInstanceState!=null) {
             recipeName = savedInstanceState.getString(RECIPE_NAME);
-          //  Log.d(Constants.TAG, recipeName);
+            ingredientList = savedInstanceState.getParcelableArrayList(INGREDIENT_LIST);
+            stepsList = savedInstanceState.getParcelableArrayList(STEPS_LIST);
 
         }
         fab.setOnClickListener(new View.OnClickListener() {
@@ -115,8 +116,7 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
                 fragment.setParentActivity(RecipeItemDetailActivity.this);
 
             getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.item_detail_container, fragment)
-                        .addToBackStack(null)
+                        .replace(R.id.item_detail_container, fragment, null)
                         .commit();
 
 
@@ -130,7 +130,8 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(RECIPE_NAME, recipeName);
-        Log.d(Constants.TAG, "SAVE INSTANCE" + recipeName);
+        outState.putParcelableArrayList(INGREDIENT_LIST, ingredientList);
+        outState.putParcelableArrayList(STEPS_LIST, stepsList);
 
     }
 

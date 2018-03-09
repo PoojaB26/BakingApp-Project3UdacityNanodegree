@@ -41,8 +41,6 @@
                 android:resource="@xml/recipe_app_widget_info" />
         </receiver>
 
-        <activity android:name=".PlayExoPlayer"/>
-        <activity android:name=".MainActivity"/>
         <activity android:name=".StepDetailActivity"
             android:parentActivityName=".RecipeItemDetailActivity"
             android:configChanges="screenSize|orientation"

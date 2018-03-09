@@ -135,6 +135,7 @@ public class StepDetailFragment extends Fragment {
         btnNext = rootView.findViewById(R.id.btnNext);
         btnPrev = rootView.findViewById(R.id.btnPrev);
 
+
         playerView = rootView.findViewById(R.id.exoplayer);
         frameLayout =  rootView.findViewById(R.id.main_media_frame);
         TextView tvDescription = rootView.findViewById(R.id.tvStepDescription);
@@ -228,7 +229,7 @@ public class StepDetailFragment extends Fragment {
         super.onResume();
         Log.d(Constants.TAG, "onResume " + mStepPositionID);
 
-        //  hideSystemUi();
+          hideSystemUi();
         if ((Util.SDK_INT <= 23 || player == null)) {
             if(!path.equals(""))
                 initializePlayer();
@@ -282,11 +283,11 @@ public class StepDetailFragment extends Fragment {
     }
 
     private MediaSource buildMediaSource(Uri uri) {
-        return new ExtractorMediaSource.Factory(new DefaultHttpDataSourceFactory("exoplayer"))
+        return new ExtractorMediaSource.Factory(new DefaultHttpDataSourceFactory("exoplayer-codelab"))
                 .createMediaSource(uri);
     }
 
-   /* @SuppressLint("InlinedApi")
+    @SuppressLint("InlinedApi")
     private void hideSystemUi() {
         playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
@@ -294,7 +295,7 @@ public class StepDetailFragment extends Fragment {
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-    }*/
+    }
 
     private void hideVideoView(){
         playerView.setVisibility(View.GONE);

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import butterknife.ButterKnife;
 import poojab26.bakingapp.R;
 import poojab26.bakingapp.RecipeItemDetailActivity;
 import poojab26.bakingapp.RecipeListActivity;
+import poojab26.bakingapp.Utils.Constants;
 import poojab26.bakingapp.adapters.StepsAdapter;
 import poojab26.bakingapp.model.Ingredient;
 import poojab26.bakingapp.model.Step;
@@ -49,14 +51,11 @@ public class RecipeItemDetailFragment extends Fragment {
     public RecipeItemDetailFragment() {
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(Constants.TAG, "OnCreate Recipe Detail Fragment");
 
 
         Bundle bundle = this.getArguments();
@@ -72,6 +71,8 @@ public class RecipeItemDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(Constants.TAG, "OnCreateView Recipe Detail Fragment");
+
         View rootView = inflater.inflate(R.layout.recipe_item_detail, container, false);
         ButterKnife.bind(this, rootView);
 

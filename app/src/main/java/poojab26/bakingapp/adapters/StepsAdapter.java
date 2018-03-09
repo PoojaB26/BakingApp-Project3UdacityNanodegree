@@ -95,7 +95,9 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder>{
                         Context context = view.getContext();
                         Intent intent = new Intent(context, StepDetailActivity.class);
                         intent.putExtra(Constants.BUNDLE_RECIPE, bundle);
-                        context.startActivity(intent);
+                        //context.startActivity(intent);
+                        mParentActivity.startActivityForResult(intent, 100);
+
 
                     }
 

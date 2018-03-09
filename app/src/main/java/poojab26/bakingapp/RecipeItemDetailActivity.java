@@ -4,8 +4,10 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
@@ -28,6 +30,7 @@ import poojab26.bakingapp.model.Step;
  * in a {@link RecipeListActivity}.
  */
 public class RecipeItemDetailActivity extends AppCompatActivity {
+    private final static String RECIPE_NAME = "recipe_name";
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
@@ -36,21 +39,29 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
     ArrayList<Ingredient> ingredientList;
     ArrayList<Step> stepsList;
     Bundle extras;
-    String recipeName;
+    static String recipeName;
 
     @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_item_detail);
-       /* Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
-        setSupportActionBar(toolbar);
-*/
+
         ButterKnife.bind(this);
+
+        Log.d(Constants.TAG, "OnCreate Recipe Detail Actvity " + savedInstanceState);
+
+        setSupportActionBar(toolbar);
+        if(savedInstanceState!=null) {
+            recipeName = savedInstanceState.getString(RECIPE_NAME);
+          //  Log.d(Constants.TAG, recipeName);
+
+        }
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 RecipeAppWidget.setRecipeName(recipeName);
 
                 String quantity, ingredient;
@@ -58,7 +69,6 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
                 for(int i=0; i<ingredientList.size(); i++){
                     quantity = ingredientList.get(i).getQuantity() + " "+ ingredientList.get(i).getMeasure();
                     ingredient = ingredientList.get(i).getIngredient();
-
                     ingredientString.append(quantity + " " + ingredient + "\n");
 
                  }
@@ -80,27 +90,13 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
         }
 
         if (findViewById(R.id.sw600) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
             mTwoPane = true;
         }
 
 
 
-        // savedInstanceState is non-null when there is fragment state
-        // saved from previous configurations of this activity
-        // (e.g. when rotating the screen from portrait to landscape).
-        // In this case, the fragment will automatically be re-added
-        // to its container so we don't need to manually add it.
-        // For more information, see the Fragments API guide at:
-        //
-        // http://developer.android.com/guide/components/fragments.html
-        //
+
         if (savedInstanceState == null) {
-            // Create the detail fragment and add it to the activity
-            // using a fragment transaction.
             int position_ID = getIntent().getIntExtra(RecipeItemDetailFragment.ARG_ITEM_ID, 0);
             extras = getIntent().getBundleExtra(Constants.BUNDLE_RECIPE);
             if(extras!=null)
@@ -110,33 +106,44 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
                 stepsList = extras.getParcelableArrayList(RecipeItemDetailFragment.ARG_STEPS);
             }
 
-                RecipeItemDetailFragment fragment = new RecipeItemDetailFragment();
+
+
+
+            RecipeItemDetailFragment fragment = new RecipeItemDetailFragment();
                 fragment.setArguments(extras);
                 fragment.setTwoPane(mTwoPane);
                 fragment.setParentActivity(RecipeItemDetailActivity.this);
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.item_detail_container, fragment)
+
+            getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.item_detail_container, fragment)
+                        .addToBackStack(null)
                         .commit();
 
 
 
         }
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(recipeName);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(RECIPE_NAME, recipeName);
+        Log.d(Constants.TAG, "SAVE INSTANCE" + recipeName);
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
             navigateUpTo(new Intent(this, RecipeListActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }

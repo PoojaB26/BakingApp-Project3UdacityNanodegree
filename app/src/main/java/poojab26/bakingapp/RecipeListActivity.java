@@ -41,16 +41,10 @@ import java.util.List;
 public class RecipeListActivity extends AppCompatActivity {
 
 
-    private List<Recipe> recipeList = new ArrayList<>();
-
-
-
-
     RetrofitInterface retrofitInterface;
     RecyclerView.LayoutManager layoutManager;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.rvRecipes) RecyclerView recipeRecyclerView;
 
     @Override
@@ -60,15 +54,6 @@ public class RecipeListActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         setupRecyclerView();
 
 

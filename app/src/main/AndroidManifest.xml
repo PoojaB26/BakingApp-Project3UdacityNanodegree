@@ -41,19 +41,16 @@
                 android:resource="@xml/recipe_app_widget_info" />
         </receiver>
 
-        <activity android:name=".PlayExoPlayer">
-
-        </activity>
-
-        <activity android:name=".MainActivity">
-           <!-- <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-        </activity>
+        <activity android:name=".PlayExoPlayer"/>
+        <activity android:name=".MainActivity"/>
         <activity android:name=".StepDetailActivity"
-            android:configChanges="screenSize|orientation"></activity>
+            android:parentActivityName=".RecipeItemDetailActivity"
+            android:configChanges="screenSize|orientation"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="poojab26.bakingapp.RecipeItemDetailActivity" />
+        </activity>
     </application>
 
 </manifest>

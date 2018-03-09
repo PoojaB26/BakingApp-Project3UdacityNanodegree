@@ -1,13 +1,17 @@
 package poojab26.bakingapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import poojab26.bakingapp.Fragments.RecipeItemDetailFragment;
@@ -24,12 +28,17 @@ public class StepDetailActivity extends AppCompatActivity {
     Bundle extras;
     int mStepPositionID;
     ArrayList<Step> mStepArrayList;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_detail);
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle(getTitle());
+
         extras = getIntent().getBundleExtra(Constants.BUNDLE_RECIPE);
 
             if (extras != null) {
@@ -45,9 +54,23 @@ public class StepDetailActivity extends AppCompatActivity {
 
             }
 
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
 
 
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return(super.onOptionsItemSelected(item));
     }
 
 

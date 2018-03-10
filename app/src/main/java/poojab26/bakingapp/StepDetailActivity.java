@@ -1,6 +1,7 @@
 package poojab26.bakingapp;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,8 @@ public class StepDetailActivity extends AppCompatActivity {
     ArrayList<Step> mStepArrayList;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,45 @@ public class StepDetailActivity extends AppCompatActivity {
 
 
     }
+
+    public void setTitle(String str){
+
+    }
+
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Log.d(Constants.TAG, "Activity congif");
+/*
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            int position_ID = extras.getInt(StepDetailFragment.ARG_STEP_POSITION_ID);
+            ArrayList<Step> stepsList = extras.getParcelableArrayList(RecipeItemDetailFragment.ARG_STEPS);
+            StepDetailFragment fragment = new StepDetailFragment();
+            fragment.setPosition(position_ID);
+            fragment.setSteps(stepsList);
+            fragment.setFullScreen(true);
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.frame_step_detail, fragment)
+                    .commit();
+
+        }else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            int position_ID = extras.getInt(StepDetailFragment.ARG_STEP_POSITION_ID);
+            ArrayList<Step> stepsList = extras.getParcelableArrayList(RecipeItemDetailFragment.ARG_STEPS);
+            StepDetailFragment fragment = new StepDetailFragment();
+            fragment.setPosition(position_ID);
+            fragment.setSteps(stepsList);
+            fragment.setFullScreen(false);
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.frame_step_detail, fragment)
+                    .commit();
+        }*/
+
+
+
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

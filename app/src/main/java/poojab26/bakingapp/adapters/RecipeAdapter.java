@@ -4,7 +4,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -51,17 +54,26 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView tvServings, tvName;
+        ImageView ivRecipeImage;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             tvServings = itemView.findViewById(R.id.tv_id);
             tvName = itemView.findViewById(R.id.tvName);
+            ivRecipeImage = itemView.findViewById(R.id.ivRecipeImage);
         }
 
         public void bind(final int position, final OnItemClickListener listener) {
             tvServings.setText(Integer.toString(recipeList.get(position).getServings())+ " Servings");
             tvName.setText(recipeList.get(position).getName());
+            String imgPath = recipeList.get(position).getImage();
+            if(!imgPath.equals("")) {
+                Picasso.with(itemView.getContext())
+                        .load(imgPath)
+                        .into(ivRecipeImage);
+            }
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

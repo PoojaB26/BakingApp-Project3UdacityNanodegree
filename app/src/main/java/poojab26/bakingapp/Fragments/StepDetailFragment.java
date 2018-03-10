@@ -25,14 +25,18 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import poojab26.bakingapp.R;
 import poojab26.bakingapp.StepDetailActivity;
 import poojab26.bakingapp.Utils.Constants;
 import poojab26.bakingapp.model.Step;
 
+import static android.view.View.GONE;
 import static poojab26.bakingapp.Fragments.RecipeItemDetailFragment.ARG_STEPS;
 
 public class StepDetailFragment extends Fragment {
@@ -42,9 +46,13 @@ public class StepDetailFragment extends Fragment {
     private ArrayList<Step> mSteps;
     private int mStepPositionID;
     private boolean mTwoPane = false;
-    Button btnNext, btnPrev;
     private View rootView;
-    TextView tvDescription;
+
+
+    @BindView(R.id.btnNext) Button btnNext;
+    @BindView(R.id.btnPrev) Button btnPrev;
+    @BindView(R.id.tvStepDescription) TextView tvDescription;
+    @BindView(R.id.ivThumbnail) ImageView ivThumbnail;
 
     private SimpleExoPlayer player;
     private SimpleExoPlayerView playerView;
@@ -60,13 +68,9 @@ public class StepDetailFragment extends Fragment {
     private final String STEPS_OBJECT = "steps_object";
     private final String STEPS_POSITION = "steps_position";
     private final String PLAYER_POSITION = "player_position";
-    private final String TWO_PANE = "two_pane";
 
-    private MediaSource mVideoSource;
     private boolean mExoPlayerFullscreen = false;
-    private FrameLayout mFullScreenButton;
-    private ImageView mFullScreenIcon;
-    private Dialog mFullScreenDialog;
+
 
     private int mResumeWindow;
     private long mResumePosition;
@@ -92,10 +96,6 @@ public class StepDetailFragment extends Fragment {
             mSteps = savedInstanceState.getParcelableArrayList(STEPS_OBJECT);
             mStepPositionID = savedInstanceState.getInt(STEPS_POSITION);
             playbackPosition = savedInstanceState.getLong(PLAYER_POSITION);
-            //   mTwoPane = savedInstanceState.getBoolean(TWO_PANE);
-
-
-
 
         }
 
@@ -115,7 +115,6 @@ public class StepDetailFragment extends Fragment {
         outState.putParcelableArrayList(STEPS_OBJECT, mSteps);
         outState.putInt(STEPS_POSITION, mStepPositionID);
         outState.putLong(PLAYER_POSITION, playbackPosition);
-        //outState.putBoolean(TWO_PANE, mTwoPane);
 
     }
 
@@ -127,65 +126,80 @@ public class StepDetailFragment extends Fragment {
             container.removeAllViews();
         }
         rootView = inflater.inflate(R.layout.fragment_step_item, container, false);
-
-
-            btnNext = rootView.findViewById(R.id.btnNext);
-            btnPrev = rootView.findViewById(R.id.btnPrev);
-            tvDescription = rootView.findViewById(R.id.tvStepDescription);
+        ButterKnife.bind(this, rootView);
 
         playerView = rootView.findViewById(R.id.exoplayer);
         frameLayout =  rootView.findViewById(R.id.main_media_frame);
 
         if(frameLayout!=null && mSteps!=null) {
-
-            tvDescription.setText(mSteps.get(mStepPositionID).getDescription());
             if(mTwoPane)
                 layout_element = R.id.sw600;
             else layout_element = R.id.frame_step_detail;
 
-            btnNext.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mStepPositionID < mSteps.size() - 1) {
-                        StepDetailFragment fragment = new StepDetailFragment();
-                        fragment.setSteps(mSteps);
-                        fragment.setPosition(mStepPositionID + 1);
-                        fragment.setTwoPane(mTwoPane);
-                        getActivity().getFragmentManager().popBackStack();
-                        getActivity().getSupportFragmentManager().beginTransaction()
-                                .replace(layout_element, fragment, null)
-                                .commit();
-                        mStepPositionID = mStepPositionID+1;
-                    }
+            setContent();
+            setButtonClicks();
 
-                }
-            });
-
-            btnPrev.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mStepPositionID > 0) {
-
-                        StepDetailFragment fragment = new StepDetailFragment();
-                        fragment.setSteps(mSteps);
-                        fragment.setPosition(mStepPositionID - 1);
-                        fragment.setTwoPane(mTwoPane);
-                        getActivity().getFragmentManager().popBackStack();
-                        getActivity().getSupportFragmentManager().beginTransaction()
-                                .replace(layout_element, fragment, null)
-                                .commit();
-                        mStepPositionID = mStepPositionID -1;
-
-                    }
-
-                }
-            });
         }
-
-
         return rootView;
     }
 
+    private void setContent() {
+        String thumbnailPath = "";
+        tvDescription.setText(mSteps.get(mStepPositionID).getDescription());
+        if(!mSteps.get(mStepPositionID).getThumbnailURL().equals("")){
+            thumbnailPath = mSteps.get(mStepPositionID).getThumbnailURL();
+            Picasso.with(getActivity().getApplicationContext())
+                    .load(thumbnailPath)
+                    .into(ivThumbnail);
+
+        }
+        if(path.equals("") && thumbnailPath.equals("")) {
+            hideVideoView();
+            ivThumbnail.setVisibility(GONE);
+        }
+
+    }
+
+    private void setButtonClicks() {
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mStepPositionID < mSteps.size() - 1) {
+                    StepDetailFragment fragment = new StepDetailFragment();
+                    fragment.setSteps(mSteps);
+                    fragment.setPosition(mStepPositionID + 1);
+                    fragment.setTwoPane(mTwoPane);
+                    getActivity().getFragmentManager().popBackStack();
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(layout_element, fragment, null)
+                            .commit();
+                    mStepPositionID = mStepPositionID+1;
+                }
+
+            }
+        });
+
+        btnPrev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mStepPositionID > 0) {
+
+                    StepDetailFragment fragment = new StepDetailFragment();
+                    fragment.setSteps(mSteps);
+                    fragment.setPosition(mStepPositionID - 1);
+                    fragment.setTwoPane(mTwoPane);
+                    getActivity().getFragmentManager().popBackStack();
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(layout_element, fragment, null)
+                            .commit();
+                    mStepPositionID = mStepPositionID -1;
+
+                }
+
+            }
+        });
+    }
 
 
     public void setSteps(ArrayList<Step> steps){
@@ -280,7 +294,7 @@ public class StepDetailFragment extends Fragment {
     }
 
     private void hideVideoView(){
-        playerView.setVisibility(View.GONE);
+        playerView.setVisibility(GONE);
     }
 
 }

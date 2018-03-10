@@ -55,12 +55,9 @@ public class RecipeItemDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(Constants.TAG, "OnCreate Recipe Detail Fragment");
-
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            Log.d(Constants.TAG, "bundle not null");
             mPositionID = bundle.getInt(ARG_ITEM_ID, 0);
             mIngredients = bundle.getParcelableArrayList(ARG_INGREDIENT);
             mSteps = bundle.getParcelableArrayList(ARG_STEPS);
@@ -73,7 +70,6 @@ public class RecipeItemDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(Constants.TAG, "OnCreateView Recipe Detail Fragment");
 
         View rootView = inflater.inflate(R.layout.recipe_item_detail, container, false);
         ButterKnife.bind(this, rootView);
@@ -85,7 +81,6 @@ public class RecipeItemDetailFragment extends Fragment {
     }
 
     private void setupIngredientsList() {
-        Log.d(Constants.TAG, "setup");
         StringBuilder stringIngredients = new StringBuilder();
         String quantity, ingredient;
         for (int i = 0; i < mIngredients.size(); ++i) {

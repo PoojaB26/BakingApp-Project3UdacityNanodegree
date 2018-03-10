@@ -98,14 +98,12 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
         }
 
 
-        Log.d(Constants.TAG, "saveinstnce "+savedInstanceState);
 
 
         if (savedInstanceState == null) {
             extras = getIntent().getBundleExtra(Constants.BUNDLE_RECIPE);
             if(extras!=null)
             {
-                Log.d(Constants.TAG, "got intent");
 
                 recipe_id = extras.getInt(RecipeItemDetailFragment.ARG_ITEM_ID);
                 recipeName = extras.getString(RecipeItemDetailFragment.ARG_RECIPE_NAME);

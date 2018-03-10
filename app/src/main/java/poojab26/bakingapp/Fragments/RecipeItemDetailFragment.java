@@ -60,10 +60,12 @@ public class RecipeItemDetailFragment extends Fragment {
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
+            Log.d(Constants.TAG, "bundle not null");
             mPositionID = bundle.getInt(ARG_ITEM_ID, 0);
             mIngredients = bundle.getParcelableArrayList(ARG_INGREDIENT);
             mSteps = bundle.getParcelableArrayList(ARG_STEPS);
         }
+
 
 
     }
@@ -78,10 +80,12 @@ public class RecipeItemDetailFragment extends Fragment {
 
         setupIngredientsList();
         setupStepsAdapter();
+
         return rootView;
     }
 
     private void setupIngredientsList() {
+        Log.d(Constants.TAG, "setup");
         StringBuilder stringIngredients = new StringBuilder();
         String quantity, ingredient;
         for (int i = 0; i < mIngredients.size(); ++i) {

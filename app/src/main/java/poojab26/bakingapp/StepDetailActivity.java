@@ -41,7 +41,6 @@ public class StepDetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
-        Log.d(Constants.TAG, "Activity");
 
         extras = getIntent().getBundleExtra(Constants.BUNDLE_RECIPE);
 
@@ -71,38 +70,6 @@ public class StepDetailActivity extends AppCompatActivity {
 
     }
 
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        Log.d(Constants.TAG, "Activity congif");
-/*
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            int position_ID = extras.getInt(StepDetailFragment.ARG_STEP_POSITION_ID);
-            ArrayList<Step> stepsList = extras.getParcelableArrayList(RecipeItemDetailFragment.ARG_STEPS);
-            StepDetailFragment fragment = new StepDetailFragment();
-            fragment.setPosition(position_ID);
-            fragment.setSteps(stepsList);
-            fragment.setFullScreen(true);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.frame_step_detail, fragment)
-                    .commit();
-
-        }else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            int position_ID = extras.getInt(StepDetailFragment.ARG_STEP_POSITION_ID);
-            ArrayList<Step> stepsList = extras.getParcelableArrayList(RecipeItemDetailFragment.ARG_STEPS);
-            StepDetailFragment fragment = new StepDetailFragment();
-            fragment.setPosition(position_ID);
-            fragment.setSteps(stepsList);
-            fragment.setFullScreen(false);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.frame_step_detail, fragment)
-                    .commit();
-        }*/
-
-
-
-    }
 
 
     @Override

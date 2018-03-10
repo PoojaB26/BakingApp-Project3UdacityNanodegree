@@ -5,11 +5,15 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import poojab26.bakingapp.Fragments.RecipeItemDetailFragment;
+import poojab26.bakingapp.Utils.Constants;
 import poojab26.bakingapp.model.Ingredient;
 import poojab26.bakingapp.model.Recipe;
 
@@ -20,6 +24,8 @@ public class RecipeAppWidget extends AppWidgetProvider {
 
     static String mRecipeName;
     static StringBuilder mIngredients;
+    static int recipe_id;
+   static Bundle mBundle;
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
@@ -35,6 +41,10 @@ public class RecipeAppWidget extends AppWidgetProvider {
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+    }
+
+    public static void setBundle(Bundle bundle) {
+        mBundle = bundle;
     }
 
     @Override
@@ -60,9 +70,16 @@ public class RecipeAppWidget extends AppWidgetProvider {
 
     }
 
+    public static void setRecipeID(int ID){
+        recipe_id = ID;
+
+    }
+
     public static void setIngredients(StringBuilder ingredients){
         mIngredients = ingredients;
 
     }
+
+
 }
 

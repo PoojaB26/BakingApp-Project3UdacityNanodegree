@@ -40,6 +40,7 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
     private boolean mTwoPane;
     ArrayList<Ingredient> ingredientList;
     ArrayList<Step> stepsList;
+    int recipe_id;
     Bundle extras;
     static String recipeName;
 
@@ -55,6 +56,8 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         if(savedInstanceState!=null) {
+
+            recipe_id = savedInstanceState.getInt(RecipeItemDetailFragment.ARG_ITEM_ID);
             recipeName = savedInstanceState.getString(RECIPE_NAME);
             ingredientList = savedInstanceState.getParcelableArrayList(INGREDIENT_LIST);
             stepsList = savedInstanceState.getParcelableArrayList(STEPS_LIST);
@@ -64,7 +67,7 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 RecipeAppWidget.setRecipeName(recipeName);
-
+                RecipeAppWidget.setRecipeID(recipe_id);
                 String quantity, ingredient;
                 StringBuilder ingredientString = new StringBuilder();
                 for(int i=0; i<ingredientList.size(); i++){
@@ -95,13 +98,16 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
         }
 
 
+        Log.d(Constants.TAG, "saveinstnce "+savedInstanceState);
 
 
         if (savedInstanceState == null) {
-            int position_ID = getIntent().getIntExtra(RecipeItemDetailFragment.ARG_ITEM_ID, 0);
             extras = getIntent().getBundleExtra(Constants.BUNDLE_RECIPE);
             if(extras!=null)
             {
+                Log.d(Constants.TAG, "got intent");
+
+                recipe_id = extras.getInt(RecipeItemDetailFragment.ARG_ITEM_ID);
                 recipeName = extras.getString(RecipeItemDetailFragment.ARG_RECIPE_NAME);
                 ingredientList  = extras.getParcelableArrayList(RecipeItemDetailFragment.ARG_INGREDIENT);
                 stepsList = extras.getParcelableArrayList(RecipeItemDetailFragment.ARG_STEPS);
@@ -124,6 +130,19 @@ public class RecipeItemDetailActivity extends AppCompatActivity {
         }
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(recipeName);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        Bundle extras = getIntent().getBundleExtra(Constants.BUNDLE_RECIPE);
+        if (extras != null) {
+            recipe_id = extras.getInt(RecipeItemDetailFragment.ARG_ITEM_ID);
+            recipeName = extras.getString(RecipeItemDetailFragment.ARG_RECIPE_NAME);
+            ingredientList  = extras.getParcelableArrayList(RecipeItemDetailFragment.ARG_INGREDIENT);
+            stepsList = extras.getParcelableArrayList(RecipeItemDetailFragment.ARG_STEPS);
+        }
     }
 
     @Override

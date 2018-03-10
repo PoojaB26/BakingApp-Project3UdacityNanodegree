@@ -45,7 +45,6 @@ public class StepDetailFragment extends Fragment {
     Button btnNext, btnPrev;
     private View rootView;
     TextView tvDescription;
-    Boolean fullScreen = false;
 
     private SimpleExoPlayer player;
     private SimpleExoPlayerView playerView;
@@ -120,12 +119,6 @@ public class StepDetailFragment extends Fragment {
 
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -133,18 +126,17 @@ public class StepDetailFragment extends Fragment {
         if (container != null) {
             container.removeAllViews();
         }
-        int layout = fullScreen ? R.layout.activity_play_exo_player : R.layout.fragment_step_item;
-        rootView = inflater.inflate(layout, container, false);
+        rootView = inflater.inflate(R.layout.fragment_step_item, container, false);
 
-        if(!fullScreen) {
+
             btnNext = rootView.findViewById(R.id.btnNext);
             btnPrev = rootView.findViewById(R.id.btnPrev);
             tvDescription = rootView.findViewById(R.id.tvStepDescription);
-        }
+
         playerView = rootView.findViewById(R.id.exoplayer);
         frameLayout =  rootView.findViewById(R.id.main_media_frame);
 
-        if(frameLayout!=null && mSteps!=null && !fullScreen) {
+        if(frameLayout!=null && mSteps!=null) {
 
             tvDescription.setText(mSteps.get(mStepPositionID).getDescription());
             if(mTwoPane)
@@ -291,7 +283,4 @@ public class StepDetailFragment extends Fragment {
         playerView.setVisibility(View.GONE);
     }
 
-    public void setFullScreen(boolean fullScreen) {
-        this.fullScreen = fullScreen;
-    }
 }

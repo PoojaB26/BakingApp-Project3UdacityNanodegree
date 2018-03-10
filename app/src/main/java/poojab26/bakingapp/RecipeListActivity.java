@@ -2,6 +2,10 @@ package poojab26.bakingapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +20,7 @@ import android.view.View;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import poojab26.bakingapp.Fragments.RecipeItemDetailFragment;
+import poojab26.bakingapp.IdlingResource.SimpleIdlingResource;
 import poojab26.bakingapp.Interfaces.RetrofitInterface;
 import poojab26.bakingapp.Utils.APIClient;
 import poojab26.bakingapp.Utils.Constants;
@@ -40,6 +45,9 @@ import java.util.List;
  */
 public class RecipeListActivity extends AppCompatActivity {
 
+
+    @Nullable
+    private SimpleIdlingResource idlingResource;
 
     RetrofitInterface retrofitInterface;
     RecyclerView.LayoutManager layoutManager;
@@ -111,6 +119,15 @@ public class RecipeListActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (idlingResource == null) {
+            idlingResource = new SimpleIdlingResource();
+        }
+        return idlingResource;
     }
 
 }

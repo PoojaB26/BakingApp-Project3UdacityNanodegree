@@ -130,7 +130,6 @@ public class StepDetailFragment extends Fragment {
             tvDescription = rootView.findViewById(R.id.tvStepDescription);
 
         }
-        Log.d(Constants.TAG, "oncreateview fragment");
 
 
 
@@ -219,7 +218,7 @@ public class StepDetailFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-          //hideSystemUi();
+        //hideSystemUi();
         if ((Util.SDK_INT <= 23 || player == null)) {
             if(!path.equals(""))
                 initializePlayer();

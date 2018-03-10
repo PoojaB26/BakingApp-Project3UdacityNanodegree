@@ -49,6 +49,9 @@ public class StepDetailFragment extends Fragment {
     private View rootView;
 
 
+    Bundle bundle;
+
+
     @BindView(R.id.btnNext) Button btnNext;
     @BindView(R.id.btnPrev) Button btnPrev;
     @BindView(R.id.tvStepDescription) TextView tvDescription;
@@ -68,6 +71,7 @@ public class StepDetailFragment extends Fragment {
     private final String STEPS_OBJECT = "steps_object";
     private final String STEPS_POSITION = "steps_position";
     private final String PLAYER_POSITION = "player_position";
+    private final String PLAY_WHEN_READY = "play_when_ready";
 
     private boolean mExoPlayerFullscreen = false;
 
@@ -96,6 +100,7 @@ public class StepDetailFragment extends Fragment {
             mSteps = savedInstanceState.getParcelableArrayList(STEPS_OBJECT);
             mStepPositionID = savedInstanceState.getInt(STEPS_POSITION);
             playbackPosition = savedInstanceState.getLong(PLAYER_POSITION);
+            playWhenReady = savedInstanceState.getBoolean(PLAY_WHEN_READY);
 
         }
 
@@ -115,6 +120,7 @@ public class StepDetailFragment extends Fragment {
         outState.putParcelableArrayList(STEPS_OBJECT, mSteps);
         outState.putInt(STEPS_POSITION, mStepPositionID);
         outState.putLong(PLAYER_POSITION, playbackPosition);
+        outState.putBoolean(PLAY_WHEN_READY, playWhenReady);
 
     }
 
@@ -127,6 +133,7 @@ public class StepDetailFragment extends Fragment {
         }
         rootView = inflater.inflate(R.layout.fragment_step_item, container, false);
         ButterKnife.bind(this, rootView);
+
 
         playerView = rootView.findViewById(R.id.exoplayer);
         frameLayout =  rootView.findViewById(R.id.main_media_frame);
@@ -239,10 +246,14 @@ public class StepDetailFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
+        playbackPosition = player.getCurrentPosition();
+        playWhenReady = player.getPlayWhenReady();
 
         if (Util.SDK_INT <= 23) {
             releasePlayer();
         }
+
+
     }
 
     @Override

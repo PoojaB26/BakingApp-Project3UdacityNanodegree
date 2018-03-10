@@ -32,6 +32,9 @@ public class StepDetailActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    int position_ID;
+    ArrayList<Step> stepsList;
+
 
 
     @Override
@@ -43,33 +46,30 @@ public class StepDetailActivity extends AppCompatActivity {
         toolbar.setTitle(getTitle());
 
         extras = getIntent().getBundleExtra(Constants.BUNDLE_RECIPE);
+        if (extras != null) {
 
-            if (extras != null) {
+            position_ID = extras.getInt(StepDetailFragment.ARG_STEP_POSITION_ID);
+            stepsList = extras.getParcelableArrayList(RecipeItemDetailFragment.ARG_STEPS);
+        }
 
-                int position_ID = extras.getInt(StepDetailFragment.ARG_STEP_POSITION_ID);
-                ArrayList<Step> stepsList = extras.getParcelableArrayList(RecipeItemDetailFragment.ARG_STEPS);
-                StepDetailFragment fragment = new StepDetailFragment();
-                fragment.setPosition(position_ID);
-                fragment.setSteps(stepsList);
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.frame_step_detail, fragment)
-                        .commit();
-
-            }
+        if(savedInstanceState==null){
+            instantiateFragment();
+        }
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
-
-
     }
 
-    public void setTitle(String str){
-
-    }
-
+  public void instantiateFragment(){
+      StepDetailFragment fragment = new StepDetailFragment();
+      fragment.setPosition(position_ID);
+      fragment.setSteps(stepsList);
+      getSupportFragmentManager().beginTransaction()
+              .add(R.id.frame_step_detail, fragment)
+              .commit();
+  }
 
 
     @Override
